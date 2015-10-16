@@ -7,6 +7,13 @@ class TemplateController < ApplicationController
     end
   end
 
+  def templatesbyname
+    items = Template.where(node_label: /#{params[:name]}/i).to_a
+    respond_to do |format|
+      format.json { render json: items }
+    end
+  end
+
   def template_collector(templates_array, template_id)
     template = Template.find(template_id)
     templates_array << template
