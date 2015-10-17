@@ -1,4 +1,4 @@
-class TemplateController < ApplicationController
+class TemplatesController < ApplicationController
   
   def show
     template_array = template_collector([], params[:id])
@@ -7,7 +7,7 @@ class TemplateController < ApplicationController
     end
   end
 
-  def templatesbyname
+  def templates_by_name
     items = Template.where(node_label: /#{params[:name]}/i).to_a
     respond_to do |format|
       format.json { render json: items }

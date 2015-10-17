@@ -5,9 +5,14 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
 
-  resources :template
+  resources :templates, only: [:show] do
+    collection do
+      get 'templates_by_name'
+    end
+  end
 
-  get 'templatesbyname' => 'template#templatesbyname'
+  resources :entities, only: [:create]
+
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

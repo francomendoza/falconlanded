@@ -19,6 +19,11 @@ module Backthing
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
+    Neography.configure do |config|
+      config.authentication = 'basic'
+      config.username = 'neo4j'
+      config.password = 'bern'
+    end
 
     config.middleware.insert_before 0, "Rack::Cors" do
       allow do
