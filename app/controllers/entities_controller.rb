@@ -1,19 +1,14 @@
 class EntitiesController < ApplicationController
   def create
-    @neo = Neography::Rest.new
-    node_properties = params[:node_properties].each_with_object({}) do |node_property, obj|
-      obj[node_property[:name]] = node_property[:value]
-    end
-    new_node =  @neo.create_node(node_properties)
-    puts new_node
-    @neo.add_label(new_node, params[:node_label])
+    entity_form = EntityForm.new(params[:entity])
+    new_entity = Entity.new(entity_form.data)
+    new_entity.save
     respond_to do |format|
       format.json do
         render json: {
-          entity_id: new_node["metadata"]["id"],
-          node_label: params[:node_label],
-          node_properties: params[:node_properties],
-          node_properties: params[:node_properties]
+          entity_id: new_entity.id,
+          node_label: new_entity.label,
+          node_properties: new_entity.properties
         }
       end
     end
