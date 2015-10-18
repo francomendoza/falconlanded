@@ -11,7 +11,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :entities, only: [:create]
+  resources :entities, only: [:create] do
+    collection do
+      get 'entities_by_template_id'
+    end
+  end
 
 
   # Example of regular route:
