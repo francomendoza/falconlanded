@@ -1,11 +1,11 @@
-require 'active_support'
 class Entity
   # node_label == template name
   # template id
   # properties
   # relationships
   # dirty tracking?
-  
+  attr_reader :id, :label
+
   class << self
     def all
       all_nodes = neo.execute_query('match (n) return n;')
@@ -29,25 +29,22 @@ class Entity
       end
     end
 
-    def after_save(one, two)
-
-    end
-
-    def after_destroy(one, two)
-
+    def search(type, term)
+      response = elasticsearch.search index: 'entities', body: { query: { prefix: { _all: term } }, filter: {type: {value: type}} }
+      response['hits']['hits'].map do |hit|
+        Entity.new(id: hit['_id'], properties: hit['_source']['properties'], label: hit['_type'])
+      end
     end
 
     def neo
       @neo ||= Neography::Rest.new
     end
+
+    def elasticsearch
+      @elasticsearch ||= Elasticsearch::Client.new log: true
+    end
   end
 
-  include ActiveModel::Model
-  include Searchkick::Model
-  extend Searchkick::Model
-  searchkick
-
-  attr_reader :id, :label
 
   def initialize(id:, label:, properties:)
     @id = id
@@ -59,11 +56,26 @@ class Entity
     new_node = neo.create_node(self.properties)
     neo.add_label(new_node, self.label)
     @id = new_node["metadata"]["id"]
+    elasticsearch.index index: 'entities', type: @label, id: @id, body: {properties: @properties }
     true
+  end
+
+  def to_hash
+    {
+      entity_id: self.id,
+      node_label: self.label,
+      node_properties: self.properties_as_frontend
+    }
   end
 
   def properties
     @properties
+  end
+
+  def properties_as_frontend
+    @properties.each.with_object([]) do |(key, value), obj|
+      obj << {name: key.to_s, value: value, type: 'text'}
+    end
   end
 
 
@@ -71,6 +83,10 @@ class Entity
 
   def neo
     @neo ||= Neography::Rest.new
+  end
+
+  def elasticsearch
+    @elasticsearch ||= Elasticsearch::Client.new log: true
   end
 
   def initialize_properties(properties_hash)

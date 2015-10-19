@@ -5,12 +5,9 @@ class EntitiesController < ApplicationController
     new_entity.save
     respond_to do |format|
       format.json do
-        render json: {
-          entity_id: new_entity.id,
-          node_label: new_entity.label,
-          node_properties: new_entity.properties
-        }
+        render json: new_entity.to_hash
       end
+
     end
   end
 
@@ -23,6 +20,15 @@ class EntitiesController < ApplicationController
     end 
     respond_to do |format|
       format.json { render json: response }
+    end
+  end
+
+  def autocomplete
+    results = Entity.search(params[:type], params[:term])
+    respond_to do |format|
+      format.json do
+        render json: results.map(&:to_hash)
+      end
     end
   end
 end
