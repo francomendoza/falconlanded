@@ -13,7 +13,7 @@ Rails.application.routes.draw do
 
   resources :entities, only: [:create] do
     collection do
-      get 'entities_by_template_id'
+      get 'autocomplete'
     end
   end
 
