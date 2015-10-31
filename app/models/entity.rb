@@ -78,6 +78,9 @@ class Entity
     end
   end
 
+  def create_rel(entity_id, relationship)
+    neo.create_relationship(relationship, Entity.find(self.id), Entity.find(entity_id))
+  end
 
   private
 

@@ -3,11 +3,15 @@ class EntitiesController < ApplicationController
     entity_form = EntityForm.new(params[:entity])
     new_entity = Entity.new(entity_form.data)
     new_entity.save
+
+    (params[:entity][:related_nodes] || []).each do |related_node|
+      new_entity.create_rel(related_node[:entity_id], related_node[:relationship])
+    end
+
     respond_to do |format|
       format.json do
         render json: new_entity.to_hash
       end
-
     end
   end
 
