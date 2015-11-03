@@ -5,6 +5,7 @@ class RelatedNode
   field :relationship, type: String
   field :required, type: Boolean
   field :entity_id, type: Integer
+  field :count_limit, type: Integer, default: 1
 
   embedded_in :template
 end

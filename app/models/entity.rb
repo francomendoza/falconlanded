@@ -56,7 +56,9 @@ class Entity
     new_node = neo.create_node(self.properties)
     neo.add_label(new_node, self.label)
     @id = new_node["metadata"]["id"]
-    elasticsearch.index index: 'entities', type: @label, id: @id, body: {properties: @properties }
+    @label.each do |label|
+      elasticsearch.index index: 'entities', type: label, id: @id, body: {properties: @properties }
+    end
     true
   end
 

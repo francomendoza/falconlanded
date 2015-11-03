@@ -8,7 +8,7 @@
 [
 {
     template_id: 1,
-    node_label: "Container",
+    node_label: ["Container"],
     node_properties: [
     {
         name: "name",
@@ -20,7 +20,7 @@
 },
 {
     template_id: 2,
-    node_label: "Location",
+    node_label: ["Location"],
     node_properties: [
     {
         name: "city",
@@ -37,7 +37,7 @@
 },
 {
     template_id: 3,
-    node_label: "Company",
+    node_label: ["Company"],
     node_properties: [
     {
         name: "name",
@@ -51,13 +51,14 @@
             node_label: "Location",
             relationship: "located",
             required: true,
-            entity_id: nil
+            entity_id: nil,
+            count_limit: 1
         }
     ]
 },
 {
     template_id: 4,
-    node_label: "PartNumber",
+    node_label: ["PartNumber"],
     node_properties: [
     {
         name: "part_number",
@@ -71,13 +72,14 @@
             node_label: "Company",
             relationship: "child_of",
             required: true,
-            entity_id: nil # entity_instance
+            entity_id: nil,
+            count_limit: 1 # entity_instance
         }
     ]
 },
 {
     template_id: 5,
-    node_label: "Flask",
+    node_label: ["Flask"],
     node_properties: [
     {
         name: "name",
@@ -96,20 +98,22 @@
             node_label: "Container",
             relationship: "child_of",
             required: true,
-            entity_id: nil #(n:Container {name: "Flask"})
+            entity_id: nil,
+            count_limit: 1 #(n:Container {name: "Flask"})
         },
         {
             template_id: 4,
             node_label: "PartNumber",
             relationship: "has_part_number",
             required: true,
-            entity_id: nil
+            entity_id: nil,
+            count_limit: 1
         }
     ]
 },
 {
         template_id: 6,
-        node_label: "Plate",
+        node_label: ["Plate"],
         node_properties: [
         {
             name: "name",
@@ -133,20 +137,22 @@
                 node_label: "Container",
                 relationship: "child_of",
                 required: true,
-                entity_id: nil
+                entity_id: nil,
+                count_limit: 1
             },
             {
                 template_id: 3,
                 node_label: "PartNumber",
                 relationship: "has_part_number",
                 required: true,
-                entity_id: nil
+                entity_id: nil,
+                count_limit: 1
             }
         ]
     },
 {
     template_id: 7,
-    node_label: "Box",
+    node_label: ["Box"],
     node_properties: [
     {
         name: "name",
@@ -165,20 +171,22 @@
             node_label: "Container",
             relationship: "child_of",
             required: true,
-            entity_id: nil
+            entity_id: nil,
+            count_limit: 1
         },
         {
             template_id: 4,
             node_label: "PartNumber",
             relationship: "has_part_number",
             required: true,
-            entity_id: nil
+            entity_id: nil,
+            count_limit: 1
         }
     ]
 },
 {
     template_id: 8,
-    node_label: "Equipment",
+    node_label: ["Equipment"],
     node_properties: [
     {
         name: "name",
@@ -190,7 +198,7 @@
 },
 {
     template_id: 9,
-    node_label: "Refrigerator",
+    node_label: ["Refrigerator"],
     node_properties: [
     {
         name: "name",
@@ -214,27 +222,30 @@
             node_label: "Container",
             relationship: "child_of",
             required: true,
-            entity_id: nil
+            entity_id: nil,
+            count_limit: 1
         },
         {
             template_id: 8,
             node_label: "Equipment",
             relationship: "child_of",
             required: true,
-            entity_id: nil
+            entity_id: nil,
+            count_limit: 1
         },
         {
             template_id: 4,
             node_label: "PartNumber",
             relationship: "has_part_number",
             required: true,
-            entity_id: nil
+            entity_id: nil,
+            count_limit: 1
         }
     ]
 },
 {
     template_id: 10,
-    node_label: "Freezer",
+    node_label: ["Freezer"],
     node_properties: [
     {
         name: "name",
@@ -258,27 +269,30 @@
             node_label: "Container",
             relationship: "child_of",
             required: true,
-            entity_id: nil
+            entity_id: nil,
+            count_limit: 1
         },
         {
             template_id: 8,
             node_label: "Equipment",
             relationship: "child_of",
             required: true,
-            entity_id: nil
+            entity_id: nil,
+            count_limit: 1
         },
         {
             template_id: 4,
             node_label: "PartNumber",
             relationship: "has_part_number",
             required: true,
-            entity_id: nil
+            entity_id: nil,
+            count_limit: 1
         }
     ]
 },
 {
         template_id: 11,
-        node_label: "Vial",
+        node_label: ["Vial"],
         node_properties: [
             {
                 name: "name",
@@ -297,20 +311,22 @@
                 node_label: "Container",
                 relationship: "child_of",
                 required: true,
-                entity_id: nil
+                entity_id: nil,
+                count_limit: 1
             },
             {
                 template_id: 3,
                 node_label: "PartNumber",
                 relationship: "has_part_number",
                 required: true,
-                entity_id: nil
+                entity_id: nil,
+                count_limit: 1
             }
         ]
     },
 {
         template_id: 12,
-        node_label: "Bottle",
+        node_label: ["Bottle"],
         node_properties: [
             {
                 name: "name",
@@ -329,20 +345,22 @@
                 node_label: "Container",
                 relationship: "child_of",
                 required: true,
-                entity_id: nil
+                entity_id: nil,
+                count_limit: 1
             },
             {
                 template_id: 3,
                 node_label: "PartNumber",
                 relationship: "has_part_number",
                 required: true,
-                entity_id: nil
+                entity_id: nil,
+                count_limit: 1
             }
         ]
     },
     {
         template_id: 13,
-        node_label: "Bag",
+        node_label: ["Bag"],
         node_properties: [
             {
                 name: "name",
@@ -361,20 +379,22 @@
                 node_label: "Container",
                 relationship: "child_of",
                 required: true,
-                entity_id: nil
+                entity_id: nil,
+                count_limit: 1
             },
             {
                 template_id: 3,
                 node_label: "PartNumber",
                 relationship: "has_part_number",
                 required: true,
-                entity_id: nil
+                entity_id: nil,
+                count_limit: 1
             }
         ]
     },
     {
         template_id: 14,
-        node_label: "Compound",
+        node_label: ["Compound"],
         node_properties: [
             {
                 name: "name",
@@ -386,7 +406,7 @@
     },
     {
         template_id: 15,
-        node_label: "Salt",
+        node_label: ["Salt", "Sampleable"],
         node_properties: [
             {
                 name: "name",
@@ -400,59 +420,21 @@
                 node_label: "Compound",
                 relationship: "child_of",
                 required: true,
-                entity_id: nil
+                entity_id: nil,
+                count_limit: 1
             },
             {
                 template_id: 3,
                 node_label: "PartNumber",
                 relationship: "has_part_number",
                 required: true,
-                entity_id: nil
+                entity_id: nil,
+                count_limit: 1
             }
         ]
     },
-    {
-        node_label: "Generic Salt Lot",
-        node_properties: [
-            {
-                name: "lot number",
-                type: "number",
-                value: nil
-            }
-        ],
-        related_nodes: [
-            {
-                node_label: "Salt",
-                relationship: "lot_of",
-                required: true,
-                entity_id: nil
-            }
-        ]    
-    },
-    {
-        node_label: "Specific PO NaCl Salt Lot",
-        node_type: "Lot",
-        node_properties: [
-            {
-                name: "lot number",
-                type: "number",
-                value: nil
-            },
-            {
-                name: "% of Al",
-                type: "number",
-                value: nil
-            }
-        ],
-        related_nodes: [
-            {
-                node_label: "Salt",
-                relationship: "lot_of",
-                required: true,
-                entity_id: 18
-            }
-        ]
-    },
+    
+    
                                         # {
                                         #     node_label: "Sample",
                                         #     node_type: "Sample",
@@ -499,7 +481,7 @@
                                         # },
     {
         template_id: 16,
-        node_label: "Solution",
+        node_label: ["Solution", "Sampleable"],
         node_properties: [
         {
             name: "name",
@@ -513,13 +495,14 @@
                 node_label: "PartNumber",
                 relationship: "has_part_number",
                 required: true,
-                entity_id: nil
+                entity_id: nil,
+                count_limit: 1
             }
         ]
     },
     {
         template_id: 17,
-        node_label: "Person",
+        node_label: ["Person"],
         node_properties: [
         {
             name: "first_name",
@@ -541,7 +524,7 @@
     },
     {
         template_id: 18,
-        node_label: "Year",
+        node_label: ["Year"],
         node_properties: [
         {
             name: 'year',
@@ -553,7 +536,7 @@
     },
     {
         template_id: 19,
-        node_label: "Month",
+        node_label: ["Month"],
         node_properties: [
         {
             name: 'month',
@@ -567,13 +550,14 @@
                 node_label: "Year",
                 relationship: 'of_year',
                 required: true,
-                entity_id: nil
+                entity_id: nil,
+                count_limit: 1
             }
         ]
     },
     {
         template_id: 20,
-        node_label: "Day",
+        node_label: ["Day"],
         node_properties: [
         {
             name: 'day',
@@ -587,13 +571,14 @@
                 node_label: "Month",
                 relationship: 'of_month',
                 required: true,
-                entity_id: nil
+                entity_id: nil,
+                count_limit: 1
             }
         ]
     },
     {
         template_id: 21,
-        node_label: "Time",
+        node_label: ["Time"],
         node_properties: [
         {
             name: 'time',
@@ -607,7 +592,8 @@
                 node_label: "Day",
                 relationship: 'of_day',
                 required: true,
-                entity_id: nil
+                entity_id: nil,
+                count_limit: 1
             }
         ]
     }].each do |temp|
@@ -615,8 +601,8 @@
       temp[:node_properties].each do |node_props|
         temptemp.node_properties.create(node_props)
       end
-      temp[:related_nodes].each do |rel_node|
+      temptemp.related_nodes << temp[:related_nodes].map do |rel_node|
         related_template = Template.find_by(node_label: rel_node[:node_label])
-        temptemp.related_nodes.create(template_id: related_template.id.to_s, relationship: rel_node[:relationship], required: rel_node[:required], entity_id: rel_node[:entity_id])
+        RelatedNode.new(template_id: related_template.id.to_s, relationship: rel_node[:relationship], required: rel_node[:required], entity_id: rel_node[:entity_id])
       end
     end
