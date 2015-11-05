@@ -5,7 +5,9 @@ class EntitiesController < ApplicationController
     new_entity.save
 
     (params[:entity][:related_nodes] || []).each do |related_node|
-      new_entity.create_rel(related_node[:entity_id], related_node[:relationship])
+      related_node[:entity_id].each do |entity_id|
+        new_entity.create_rel(entity_id, related_node[:relationship])
+      end
     end
 
     respond_to do |format|

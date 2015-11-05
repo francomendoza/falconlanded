@@ -52,7 +52,7 @@
             relationship: "located",
             required: true,
             entity_id: nil,
-            count_limit: 1
+            count_limit: -1
         }
     ]
 },
@@ -195,6 +195,32 @@
     }
     ],
         related_nodes: []
+},
+{
+    node_label: ["pH Probe"],
+    node_properties: [
+        {
+            name: "name",
+            type: "text",
+            value: nil
+        }        
+    ],
+    related_nodes: [
+        {
+            node_label: "Equipment",
+            relationship: "child_of",
+            required: true,
+            entity_id: nil, #Equipment:pH Probe
+            count_limit: 1
+        },
+        {
+            node_label: "PartNumber",
+            relationship: "has_part_number",
+            required: true,
+            entity_id: nil,
+            count_limit: 1
+        }
+    ]
 },
 {
     template_id: 9,
@@ -578,7 +604,7 @@
     },
     {
         template_id: 21,
-        node_label: ["Time"],
+        node_label: ["Hour"],
         node_properties: [
         {
             name: 'time',
@@ -596,13 +622,35 @@
                 count_limit: 1
             }
         ]
-    }].each do |temp|
-      temptemp = Template.create(node_label: temp[:node_label])
-      temp[:node_properties].each do |node_props|
-        temptemp.node_properties.create(node_props)
-      end
-      temptemp.related_nodes << temp[:related_nodes].map do |rel_node|
-        related_template = Template.find_by(node_label: rel_node[:node_label])
-        RelatedNode.new(template_id: related_template.id.to_s, relationship: rel_node[:relationship], required: rel_node[:required], entity_id: rel_node[:entity_id])
-      end
-    end
+    },
+    {
+        template_id: 21,
+        node_label: ["Minute"],
+        node_properties: [
+        {
+            name: 'time',
+            type: 'text',
+            type: nil
+        }
+        ],
+            related_nodes: [
+            {
+                template_id: 20,
+                node_label: "Hour",
+                relationship: 'of_hour',
+                required: true,
+                entity_id: nil,
+                count_limit: 1
+            }
+        ]
+    }
+].each do |temp|
+  temptemp = Template.create(node_label: temp[:node_label])
+  temp[:node_properties].each do |node_props|
+    temptemp.node_properties.create(node_props)
+  end
+  temptemp.related_nodes << temp[:related_nodes].map do |rel_node|
+    related_template = Template.find_by(node_label: rel_node[:node_label])
+    RelatedNode.new(template_id: related_template.id.to_s, relationship: rel_node[:relationship], required: rel_node[:required], entity_id: rel_node[:entity_id], count_limit: rel_node[:count_limit])
+  end
+end
