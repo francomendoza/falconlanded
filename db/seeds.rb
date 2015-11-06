@@ -260,34 +260,33 @@
         value: nil
     }
     ],
-        related_nodes: [
-        {
-            template_id: 1,
-            node_label: "Container",
-            relationship: "child_of",
-            required: true,
-            entity_id: nil,
-            count_limit: 1,
-            match_type: "exact"
-        },
-        {
-            template_id: 8,
-            node_label: "Equipment",
-            relationship: "child_of",
-            required: true,
-            entity_id: nil,
-            count_limit: 1,
-            match_type: "exact"
-        },
-        {
-            template_id: 4,
-            node_label: "PartNumber",
-            relationship: "has_part_number",
-            required: true,
-            entity_id: nil,
-            count_limit: 1,
-            match_type: "exact"
-        }
+    related_nodes: [
+      {
+        template_id: 1,
+        node_label: "Container",
+        relationship: "child_of",
+        required: true,
+        entity_id: nil,
+        count_limit: 1,
+        match_type: "exact"
+      },
+      {
+        template_id: 8,
+        node_label: "Equipment",
+        relationship: "child_of",
+        required: true,
+        entity_id: nil,
+        count_limit: 1,
+        match_type: "exact"
+      },
+      {
+        node_label: "PartNumber",
+        relationship: "has_part_number",
+        required: true,
+        entity_id: nil,
+        count_limit: 1,
+        match_type: "exact"
+      }
     ],
     children_templates: []
 },
@@ -679,7 +678,7 @@
         {
             name: 'time',
             type: 'text',
-            type: nil
+            value: nil
         }
         ],
             related_nodes: [
@@ -694,6 +693,98 @@
             }
         ],
     children_templates: []
+    },
+    {
+      template_id: 22,
+      node_label: ["Instrument"],
+      node_properties: [{
+        name: 'name',
+        type: 'text',
+        value: nil
+      }],
+      related_nodes: [
+        {
+          template_id: 8,
+          node_label: 'Equipment',
+          relationship: 'child_of',
+          required: true,
+          entity_id: nil,
+          match_type: 'exact',
+          count_limit: 1
+        }
+      ]
+    },
+    {
+      template_id: 23,
+      node_label: ["Measurement"],
+      node_properties: [
+        {
+          name: 'value',
+          type: 'text',
+          value: nil
+        }
+      ],
+      related_nodes: [
+        {
+          template_id: 22,
+          node_label: "Equipment",
+          relationship: 'measured_by',
+          entity_id: nil,
+          required: true,
+          match_type: 'exact',
+          count_limit: 1
+        },
+        {
+          node_label: "Second",
+          relationship: 'measured_at',
+          required: true,
+          entity_id: nil,
+          match_type: 'exact',
+          count_limit: 1
+        }
+      ]
+    },
+    {
+      template_id: 24,
+      node_label: ["Sample"],
+      node_properties: [
+        {
+          name: 'name',
+          type: 'text',
+          value: nil
+        },
+        {
+          name: 'description',
+          type: 'text',
+          value: nil
+        }
+      ],
+      related_nodes: [
+        {
+          node_label: "Sampleable",
+          required: true,
+          relationship: 'is_a_sample_of',
+          entity_id: nil,
+          match_type: 'exact',
+          count_limit: 1
+        },
+        {
+          node_label: "Measurement",
+          required: false,
+          relationship: 'has_measurement',
+          entity_id: nil,
+          match_type: 'exact',
+          count_limit: -1
+        },
+        {
+          node_label: 'Container',
+          required: true,
+          relationship: 'contained_in',
+          entity_id: nil,
+          match_type: 'leaves',
+          count_limit: 1
+        }
+      ]
     }
 ].each do |temp|
     # binding.pry
