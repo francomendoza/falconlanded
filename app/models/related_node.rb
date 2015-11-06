@@ -6,6 +6,7 @@ class RelatedNode
   field :required, type: Boolean
   field :entity_id, type: Integer
   field :count_limit, type: Integer, default: 1
+  field :match_type, type: String
 
   embedded_in :template
 end

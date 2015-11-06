@@ -10,72 +10,78 @@
     template_id: 1,
     node_label: ["Container"],
     node_properties: [
-    {
-        name: "name",
-        type: "text",
-        value: nil
-    }
+        {
+            name: "name",
+            type: "text",
+            value: nil
+        }
     ],
-    related_nodes: []
+    related_nodes: [],
+    children_templates: []
 },
 {
     template_id: 2,
     node_label: ["Location"],
     node_properties: [
-    {
-        name: "city",
-        type: "text",
-        value: nil
-    },
-    {
-        name: "country",
-        type: "text",
-        value: nil
-    }
+        {
+            name: "city",
+            type: "text",
+            value: nil
+        },
+        {
+            name: "country",
+            type: "text",
+            value: nil
+        }
     ],
-        related_nodes: []
+    related_nodes: [],
+    children_templates: []
 },
 {
     template_id: 3,
     node_label: ["Company"],
     node_properties: [
-    {
-        name: "name",
-        type: "text",
-        value: nil
-    }
+        {
+            name: "name",
+            type: "text",
+            value: nil
+        }
     ],
-        related_nodes: [
+    related_nodes: [
         {
             template_id: 2,
             node_label: "Location",
             relationship: "located",
             required: true,
             entity_id: nil,
-            count_limit: -1
+            count_limit: -1,
+            match_type: "exact"
         }
-    ]
+    ],
+    children_templates: []
 },
 {
     template_id: 4,
     node_label: ["PartNumber"],
     node_properties: [
-    {
-        name: "part_number",
-        type: "text",
-        value: nil
-    }
+        {
+            name: "part_number",
+            type: "text",
+            value: nil
+        }
     ],
-        related_nodes: [
+    related_nodes: [
         {
             template_id: 3, # entity_type == template
             node_label: "Company",
             relationship: "child_of",
             required: true,
             entity_id: nil,
-            count_limit: 1 # entity_instance
+            count_limit: 1,
+            match_type: "exact" # entity_instance
         }
-    ]
+    ],
+    children_templates: []
 },
 {
     template_id: 5,
@@ -99,7 +105,8 @@
             relationship: "child_of",
             required: true,
             entity_id: nil,
-            count_limit: 1 #(n:Container {name: "Flask"})
+            count_limit: 1,
+            match_type: "exact" #(n:Container {name: "Flask"})
         },
         {
             template_id: 4,
@@ -107,9 +114,11 @@
             relationship: "has_part_number",
             required: true,
             entity_id: nil,
-            count_limit: 1
+            count_limit: 1,
+            match_type: "exact"
         }
-    ]
+    ],
+    children_templates: []
 },
 {
         template_id: 6,
@@ -138,7 +147,8 @@
                 relationship: "child_of",
                 required: true,
                 entity_id: nil,
-                count_limit: 1
+                count_limit: 1,
+            match_type: "exact"
             },
             {
                 template_id: 3,
@@ -146,9 +156,11 @@
                 relationship: "has_part_number",
                 required: true,
                 entity_id: nil,
-                count_limit: 1
+                count_limit: 1,
+            match_type: "exact"
             }
-        ]
+        ],
+    children_templates: []
     },
 {
     template_id: 7,
@@ -172,7 +184,8 @@
             relationship: "child_of",
             required: true,
             entity_id: nil,
-            count_limit: 1
+            count_limit: 1,
+            match_type: "exact"
         },
         {
             template_id: 4,
@@ -180,9 +193,11 @@
             relationship: "has_part_number",
             required: true,
             entity_id: nil,
-            count_limit: 1
+            count_limit: 1,
+            match_type: "exact"
         }
-    ]
+    ],
+    children_templates: []
 },
 {
     template_id: 8,
@@ -211,16 +226,19 @@
             relationship: "child_of",
             required: true,
             entity_id: nil, #Equipment:pH Probe
-            count_limit: 1
+            count_limit: 1,
+            match_type: "exact"
         },
         {
             node_label: "PartNumber",
             relationship: "has_part_number",
             required: true,
             entity_id: nil,
-            count_limit: 1
+            count_limit: 1,
+            match_type: "exact"
         }
-    ]
+    ],
+    children_templates: []
 },
 {
     template_id: 9,
@@ -249,7 +267,8 @@
             relationship: "child_of",
             required: true,
             entity_id: nil,
-            count_limit: 1
+            count_limit: 1,
+            match_type: "exact"
         },
         {
             template_id: 8,
@@ -257,7 +276,8 @@
             relationship: "child_of",
             required: true,
             entity_id: nil,
-            count_limit: 1
+            count_limit: 1,
+            match_type: "exact"
         },
         {
             template_id: 4,
@@ -265,9 +285,11 @@
             relationship: "has_part_number",
             required: true,
             entity_id: nil,
-            count_limit: 1
+            count_limit: 1,
+            match_type: "exact"
         }
-    ]
+    ],
+    children_templates: []
 },
 {
     template_id: 10,
@@ -296,7 +318,8 @@
             relationship: "child_of",
             required: true,
             entity_id: nil,
-            count_limit: 1
+            count_limit: 1,
+            match_type: "exact"
         },
         {
             template_id: 8,
@@ -304,7 +327,8 @@
             relationship: "child_of",
             required: true,
             entity_id: nil,
-            count_limit: 1
+            count_limit: 1,
+            match_type: "exact"
         },
         {
             template_id: 4,
@@ -312,9 +336,11 @@
             relationship: "has_part_number",
             required: true,
             entity_id: nil,
-            count_limit: 1
+            count_limit: 1,
+            match_type: "exact"
         }
-    ]
+    ],
+    children_templates: []
 },
 {
         template_id: 11,
@@ -338,7 +364,8 @@
                 relationship: "child_of",
                 required: true,
                 entity_id: nil,
-                count_limit: 1
+                count_limit: 1,
+            match_type: "exact"
             },
             {
                 template_id: 3,
@@ -346,9 +373,11 @@
                 relationship: "has_part_number",
                 required: true,
                 entity_id: nil,
-                count_limit: 1
+                count_limit: 1,
+            match_type: "exact"
             }
-        ]
+        ],
+    children_templates: []
     },
 {
         template_id: 12,
@@ -372,7 +401,8 @@
                 relationship: "child_of",
                 required: true,
                 entity_id: nil,
-                count_limit: 1
+                count_limit: 1,
+            match_type: "exact"
             },
             {
                 template_id: 3,
@@ -380,9 +410,11 @@
                 relationship: "has_part_number",
                 required: true,
                 entity_id: nil,
-                count_limit: 1
+                count_limit: 1,
+            match_type: "exact"
             }
-        ]
+        ],
+    children_templates: []
     },
     {
         template_id: 13,
@@ -406,7 +438,8 @@
                 relationship: "child_of",
                 required: true,
                 entity_id: nil,
-                count_limit: 1
+                count_limit: 1,
+            match_type: "exact"
             },
             {
                 template_id: 3,
@@ -414,9 +447,11 @@
                 relationship: "has_part_number",
                 required: true,
                 entity_id: nil,
-                count_limit: 1
+                count_limit: 1,
+            match_type: "exact"
             }
-        ]
+        ],
+    children_templates: []
     },
     {
         template_id: 14,
@@ -428,7 +463,8 @@
                 value: nil
             }
         ],
-        related_nodes: []
+        related_nodes: [],
+    children_templates: []
     },
     {
         template_id: 15,
@@ -447,7 +483,8 @@
                 relationship: "child_of",
                 required: true,
                 entity_id: nil,
-                count_limit: 1
+                count_limit: 1,
+            match_type: "exact"
             },
             {
                 template_id: 3,
@@ -455,9 +492,11 @@
                 relationship: "has_part_number",
                 required: true,
                 entity_id: nil,
-                count_limit: 1
+                count_limit: 1,
+            match_type: "exact"
             }
-        ]
+        ],
+    children_templates: []
     },
     
     
@@ -522,9 +561,11 @@
                 relationship: "has_part_number",
                 required: true,
                 entity_id: nil,
-                count_limit: 1
+                count_limit: 1,
+            match_type: "exact"
             }
-        ]
+        ],
+    children_templates: []
     },
     {
         template_id: 17,
@@ -546,7 +587,8 @@
             value: nil
         }
         ],
-            related_nodes: []
+            related_nodes: [],
+    children_templates: []
     },
     {
         template_id: 18,
@@ -558,7 +600,8 @@
             type: nil
         }
         ],
-            related_nodes: []
+            related_nodes: [],
+    children_templates: []
     },
     {
         template_id: 19,
@@ -577,9 +620,11 @@
                 relationship: 'of_year',
                 required: true,
                 entity_id: nil,
-                count_limit: 1
+                count_limit: 1,
+            match_type: "exact"
             }
-        ]
+        ],
+    children_templates: []
     },
     {
         template_id: 20,
@@ -598,9 +643,11 @@
                 relationship: 'of_month',
                 required: true,
                 entity_id: nil,
-                count_limit: 1
+                count_limit: 1,
+            match_type: "exact"
             }
-        ]
+        ],
+    children_templates: []
     },
     {
         template_id: 21,
@@ -619,9 +666,11 @@
                 relationship: 'of_day',
                 required: true,
                 entity_id: nil,
-                count_limit: 1
+                count_limit: 1,
+            match_type: "exact"
             }
-        ]
+        ],
+    children_templates: []
     },
     {
         template_id: 21,
@@ -640,17 +689,30 @@
                 relationship: 'of_hour',
                 required: true,
                 entity_id: nil,
-                count_limit: 1
+                count_limit: 1,
+            match_type: "exact"
             }
-        ]
+        ],
+    children_templates: []
     }
 ].each do |temp|
-  temptemp = Template.create(node_label: temp[:node_label])
+    # binding.pry
+  temptemp = Template.create(node_label: temp[:node_label], children_templates: temp[:children_templates])
   temp[:node_properties].each do |node_props|
     temptemp.node_properties.create(node_props)
   end
   temptemp.related_nodes << temp[:related_nodes].map do |rel_node|
     related_template = Template.find_by(node_label: rel_node[:node_label])
+    if rel_node[:relationship] == "child_of"
+        if related_template.children_templates == nil
+            related_template.children_templates = []
+            related_template.children_templates << temptemp.id.to_s
+            related_template.save
+        else
+            related_template.children_templates << temptemp.id.to_s
+            related_template.save
+        end
+    end
     RelatedNode.new(template_id: related_template.id.to_s, relationship: rel_node[:relationship], required: rel_node[:required], entity_id: rel_node[:entity_id], count_limit: rel_node[:count_limit])
   end
 end
