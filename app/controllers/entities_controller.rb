@@ -30,7 +30,11 @@ class EntitiesController < ApplicationController
   end
 
   def autocomplete
-    results = Entity.search(params[:type], params[:term])
+    if params[:match_type] == 'exact'
+      results = Entity.search(params[:node_label], params[:term])
+    elsif params[:match_type] == 'child'
+      results = Entity.search_children(params[:node_label], params[:term])
+    end
     respond_to do |format|
       format.json do
         render json: results.map(&:to_hash)

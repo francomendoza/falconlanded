@@ -695,6 +695,29 @@
     children_templates: []
     },
     {
+        template_id: 21,
+        node_label: ["Second"],
+        node_properties: [
+            {
+                name: 'time',
+                type: 'text',
+                value: nil
+            }
+        ],
+        related_nodes: [
+            {
+                template_id: 20,
+                node_label: "Minute",
+                relationship: 'of_minute',
+                required: true,
+                entity_id: nil,
+                count_limit: 1,
+                match_type: "exact"
+            }
+        ],
+        children_templates: []
+    },
+    {
       template_id: 22,
       node_label: ["Instrument"],
       node_properties: [{
@@ -731,15 +754,7 @@
           relationship: 'measured_by',
           entity_id: nil,
           required: true,
-          match_type: 'exact',
-          count_limit: 1
-        },
-        {
-          node_label: "Second",
-          relationship: 'measured_at',
-          required: true,
-          entity_id: nil,
-          match_type: 'exact',
+          match_type: 'child',
           count_limit: 1
         }
       ]
@@ -804,6 +819,6 @@
             related_template.save
         end
     end
-    RelatedNode.new(template_id: related_template.id.to_s, relationship: rel_node[:relationship], required: rel_node[:required], entity_id: rel_node[:entity_id], count_limit: rel_node[:count_limit])
+    RelatedNode.new(template_id: related_template.id.to_s, relationship: rel_node[:relationship], required: rel_node[:required], entity_id: rel_node[:entity_id], count_limit: rel_node[:count_limit], match_type: rel_node[:match_type])
   end
 end
