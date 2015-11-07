@@ -737,29 +737,7 @@
         }
       ]
     },
-    {
-      template_id: 23,
-      node_label: ["Measurement"],
-      node_properties: [
-        {
-          name: 'value',
-          type: 'text',
-          value: nil
-        }
-      ],
-      related_nodes: [
-        {
-          template_id: 22,
-          node_label: "Equipment",
-          relationship: 'measured_by',
-          entity_id: nil,
-          required: true,
-          match_type: 'child',
-          count_limit: 1
-        }
-      ]
-    },
-    {
+     {
       template_id: 24,
       node_label: ["Sample"],
       node_properties: [
@@ -783,14 +761,14 @@
           match_type: 'exact',
           count_limit: 1
         },
-        {
-          node_label: "Measurement",
-          required: false,
-          relationship: 'has_measurement',
-          entity_id: nil,
-          match_type: 'exact',
-          count_limit: -1
-        },
+        #{
+          #node_label: "Measurement",
+          #required: false,
+          #relationship: 'has_measurement',
+          #entity_id: nil,
+          #match_type: 'exact',
+          #count_limit: -1
+        #},
         {
           node_label: 'Container',
           required: true,
@@ -800,7 +778,126 @@
           count_limit: 1
         }
       ]
-    }
+    },
+   {
+      template_id: 23,
+      node_label: ["Measurement"],
+      node_properties: [
+        {
+          name: 'alias',
+          type: 'text',
+          value: nil
+        },
+        {
+          name: 'type',
+          type: 'text',
+          value: nil
+        },
+        {
+          name: 'value',
+          type: 'text',
+          value: nil
+        },
+        {
+          name: 'unit',
+          type: 'text',
+          value: nil
+        }
+      ],
+      related_nodes: [
+        {
+          template_id: 22,
+          node_label: "Equipment",
+          relationship: 'measured_by',
+          entity_id: nil,
+          required: true,
+          match_type: 'child',
+          count_limit: 1
+        },
+        {
+          node_label: "Sample",
+          relationship: 'has_measurement',
+          entity_id: nil,
+          required: true,
+          match_type: 'exact',
+          count_limit: 1,
+          direction: 'in'
+        }
+      ]
+    },
+    #{
+      #node_label: ['Buffer', 'Transformer'],
+      #node_properties: [
+        #{
+          #name: 'name',
+          #type: 'text',
+          #value: '1M NaCl'
+        #},
+        #{
+          #name: 'description',
+          #type: 'text',
+          #value: nil
+        #}
+      #],
+      #related_nodes: [
+        #{
+          #node_label: "H2O",
+          #required: true,
+          #relationship: 'input',
+          #entity_id: nil,
+          #match_type: 'sample',
+          #count_limit: 1,
+          #vaidation_parameters: [
+            #name: ''
+          #],
+          #direction: 'in'
+        #},
+        #{
+          #node_label: "NaCl",
+          #required: true,
+          #relationship: 'input',
+          #entity_id: nil,
+          #match_type: 'sample',
+          #count_limit: 1,
+          #direction: 'in'
+        #},
+        #{
+          #node_label: "NaCl Solution",
+          #required: true,
+          #relationship: 'output',
+          #entity_id: nil,
+          #match_type: 'sample',
+          #count_limit: 1,
+          #direction: 'out'
+        #}
+      #]
+    #},
+    #{
+      #node_label: ['Loading', 'Transformer'],
+      #node_properties: [],
+      #related_nodes: [
+        #{
+          #node_label: 'Column',
+          #relationship: 'has_column'
+        #},
+        #{
+          #node_label: 'FPLC',
+          #relationship: 'uses'
+        #},
+        #{
+          #node_label: 'Sample',
+          #relationship: 'input'
+        #},
+        #{
+          #node_label: 'Buffer',
+          #relationship: 'input'
+        #},
+        #{
+          #node_label: 'Buffer',
+          #relationship: 'input'
+        #},
+      #]
+    #}
 ].each do |temp|
     # binding.pry
   temptemp = Template.create(node_label: temp[:node_label], children_templates: temp[:children_templates])
@@ -812,10 +909,10 @@
     if rel_node[:relationship] == "child_of"
         if related_template.children_templates == nil
             related_template.children_templates = []
-            related_template.children_templates << temptemp.id.to_s
+            related_template.children_templates << temptemp.node_label.first.to_s
             related_template.save
         else
-            related_template.children_templates << temptemp.id.to_s
+            related_template.children_templates << temptemp.node_label.first.to_s
             related_template.save
         end
     end

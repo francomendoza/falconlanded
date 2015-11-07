@@ -1,12 +1,41 @@
 // Transformation Template (a.k.a. recipe?)
 {
+  targets: [
+    {linear_velocity: {target: '20', units: 'cm/hr'}}
+  ],
+  calculated_properties: [
+    flowrate: {calculation: 'linear_velocity*pi*column.diameter/2'}
+  ]
+}
+{
+  targets: [
+    //starts out as nil, but user fills in...
+    {amount: {value: 1, unit: 'L'}},
+  ],
   inputs: [
     {
       sample_node_id: , //to-be-chosen: actual sample id
-      decendent_of: //defined-in-template: entity node id - e.g. any sample under NaCl Salt
+      decendent_of: 'H2O'//defined-in-template: entity node id - e.g. any sample under NaCl Salt
+      relationship_requirements: [
+        {
+          node_label: 'Measurement',
+          name: 'mass'
+          property: 'amount',
+          target:  0.990,
+          tolerance: 0.01,
+          unit: 'L',
+          target_unit: 'L'
+        }
+        //defined-in-template: list of sample property types/sample property templates
+        {mass: {min: 0.990, max: 0.995, unit: 'L', target_unit: 'L'}}
+      ]
+    },
+    {
+      sample_node_id: , //to-be-chosen: actual sample id
+      decendent_of: 'NaCl'//defined-in-template: entity node id - e.g. any sample under NaCl Salt
       required_measurements: [
         //defined-in-template: list of sample property types/sample property templates
-        "mass"
+        {mass: {min: 116, max: 116.1, unit: 'g', target_unit: 'L', calculation: 'this_amount*target_amount'}}
       ]
     },
   ],
@@ -14,6 +43,9 @@
     {
       sample_node_id:
       decendent_of:
+      required_measurements: [
+        {amount: }
+      ]
     }
   ]
 }

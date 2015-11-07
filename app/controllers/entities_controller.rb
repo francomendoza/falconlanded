@@ -6,7 +6,7 @@ class EntitiesController < ApplicationController
 
     (params[:entity][:related_nodes] || []).each do |related_node|
       related_node[:entity_id].each do |entity_id|
-        new_entity.create_rel(entity_id, related_node[:relationship])
+        new_entity.create_rel(entity_id, related_node[:relationship], related_node[:direction])
       end
     end
 
@@ -31,9 +31,10 @@ class EntitiesController < ApplicationController
 
   def autocomplete
     if params[:match_type] == 'exact'
-      results = Entity.search(params[:node_label], params[:term])
+      results = Entity.search(Array.wrap(params[:node_label]), params[:term])
     elsif params[:match_type] == 'child'
-      results = Entity.search_children(params[:node_label], params[:term])
+      children_templates = Template.find_by(node_label: params[:node_label]).children_templates
+      results = Entity.search(children_templates, params[:term])
     end
     respond_to do |format|
       format.json do

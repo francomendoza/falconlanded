@@ -29,8 +29,23 @@ class Entity
       end
     end
 
-    def search(type, term)
-      response = elasticsearch.search index: 'entities', body: { query: { prefix: { _all: term } }, filter: {type: {value: type}} }
+    def search(types, term)
+      or_types = types.map do |type|
+        {type: {value: type}}
+      end
+      response = elasticsearch.search(
+        index: 'entities',
+        body: {
+          query: {
+            prefix: {
+              _all: term
+            }
+          },
+          filter: {
+            or: or_types
+          }
+        }
+      )
       response['hits']['hits'].map do |hit|
         Entity.new(id: hit['_id'], properties: hit['_source']['properties'], label: hit['_type'])
       end
@@ -82,8 +97,14 @@ class Entity
     end
   end
 
-  def create_rel(entity_id, relationship)
-    neo.create_relationship(relationship, Entity.find(self.id), Entity.find(entity_id))
+  def create_rel(entity_id, relationship, direction)
+    if direction == 'in'
+      neo.create_relationship(relationship, Entity.find(entity_id), Entity.find(self.id))
+    elsif direction == 'out'
+      neo.create_relationship(relationship, Entity.find(self.id), Entity.find(entity_id))
+    else
+      throw "You're an idiot - directions can only be in or out"
+    end
   end
 
   private
