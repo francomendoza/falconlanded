@@ -2,6 +2,7 @@ class TemplatesController < ApplicationController
   
   def show
     template_array = template_collector([], params[:id])
+    template_array.uniq!
     respond_to do |format|
       format.json { render json: template_array }
     end
@@ -14,12 +15,24 @@ class TemplatesController < ApplicationController
     end
   end
 
-  def template_collector(templates_array, template_id)
-    template = Template.find(template_id)
-    templates_array << template
-    template.related_nodes.each do |related_node|
-      template_collector(templates_array, related_node[:template_id])
-    end
+  def template_collector(templates_array, template_label)
+    template = Template.find_by(node_label: template_label)
+
+      templates_array << template
+
+      template.related_nodes.map do |related_node|
+
+        if(related_node[:match_type] != 'exact')
+
+          related_node[:children_templates] = Template.find_by(node_label: related_node[:template_label][0]).children_templates.each do |child_template_label|
+            template_collector(templates_array, child_template_label)
+          end
+
+        else
+          template_collector(templates_array, related_node[:template_label][0])
+        end
+      end
+
     templates_array
   end
 

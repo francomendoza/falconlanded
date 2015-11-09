@@ -9,5 +9,7 @@ class RelatedNode
   field :match_type, type: String
   field :direction, type: String, default: 'out'
 
+  field :template_label, type: Array
+
   embedded_in :template
 end

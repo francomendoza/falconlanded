@@ -364,7 +364,7 @@
                 required: true,
                 entity_id: nil,
                 count_limit: 1,
-            match_type: "exact"
+                match_type: "exact"
             },
             {
                 template_id: 3,
@@ -466,8 +466,14 @@
     children_templates: []
     },
     {
+        node_label: ["Sampleable"],
+        node_properties: [],
+        related_nodes: [],
+        children_templates: []   
+    },
+    {
         template_id: 15,
-        node_label: ["Salt", "Sampleable"],
+        node_label: ["Salt"],
         node_properties: [
             {
                 name: "name",
@@ -477,13 +483,21 @@
         ],
         related_nodes: [
             {
+                node_label: "Sampleable",
+                relationship: "child_of",
+                required: false, #maybe true and provide an entity_id
+                entity_id: nil,
+                count_limit: 1,
+                match_type: "exact"
+            },
+            {
                 template_id: 14,
                 node_label: "Compound",
                 relationship: "child_of",
                 required: true,
                 entity_id: nil,
                 count_limit: 1,
-            match_type: "exact"
+                match_type: "exact"
             },
             {
                 template_id: 3,
@@ -495,65 +509,27 @@
             match_type: "exact"
             }
         ],
-    children_templates: []
+        children_templates: []
     },
-    
-    
-                                        # {
-                                        #     node_label: "Sample",
-                                        #     node_type: "Sample",
-                                        #     node_properties: [
-                                        #         {
-                                        #             name: "description",
-                                        #             type: "text",
-                                        #             value: nil
-                                        #         }
-                                        #     ],
-                                        #     related_nodes: [
-                                        #         {
-                                        #             node_type: "Lot",
-                                        #             relationship: "sample_of",
-                                        #             required: false,
-                                        #             entity_id: nil
-                                        #         },
-                                        #         {
-                                        #             node_type: "Transformation",
-                                        #             relationship: "created_from",
-                                        #             required: false,
-                                        #             entity_id: nil
-                                        #         }
-                                        #     ]    
-                                        # },
-                                        # {
-                                        #     node_description: "Buffer Mix",
-                                        #     node_type: "Transformation",
-                                        #     node_properties: [
-                                        #         {
-                                        #             name: "Buffer Name",
-                                        #             type: "text",
-                                        #             value: nil
-                                        #         }
-                                        #     ],
-                                        #     incoming_nodes: [
-                                        #         {
-                                        #             node_type: "Sample",
-                                        #             relationship: "incoming_sample",
-                                        #             required: true,
-                                        #             node_id: 570 #
-                                        #         }
-                                        #     ]
-                                        # },
     {
         template_id: 16,
-        node_label: ["Solution", "Sampleable"],
+        node_label: ["Solution"],
         node_properties: [
-        {
-            name: "name",
-            type: "text",
-            value: nil
-        }
+            {
+                name: "name",
+                type: "text",
+                value: nil
+            }
         ],
-            related_nodes: [
+        related_nodes: [
+            {
+                node_label: "Sampleable",
+                relationship: "child_of",
+                required: false, #maybe true and provide an entity_id
+                entity_id: nil,
+                count_limit: 1,
+                match_type: "exact"
+            },        
             {
                 template_id: 3,
                 node_label: "PartNumber",
@@ -561,10 +537,10 @@
                 required: true,
                 entity_id: nil,
                 count_limit: 1,
-            match_type: "exact"
+                match_type: "exact"
             }
         ],
-    children_templates: []
+        children_templates: []
     },
     {
         template_id: 17,
@@ -629,13 +605,13 @@
         template_id: 20,
         node_label: ["Day"],
         node_properties: [
-        {
-            name: 'day',
-            type: 'text',
-            type: nil
-        }
+            {
+                name: 'day',
+                type: 'text',
+                type: nil
+            }
         ],
-            related_nodes: [
+        related_nodes: [
             {
                 template_id: 19,
                 node_label: "Month",
@@ -643,10 +619,10 @@
                 required: true,
                 entity_id: nil,
                 count_limit: 1,
-            match_type: "exact"
+                match_type: "exact"
             }
         ],
-    children_templates: []
+        children_templates: []
     },
     {
         template_id: 21,
@@ -666,7 +642,7 @@
                 required: true,
                 entity_id: nil,
                 count_limit: 1,
-            match_type: "exact"
+                match_type: "exact"
             }
         ],
     children_templates: []
@@ -758,7 +734,7 @@
           required: true,
           relationship: 'is_a_sample_of',
           entity_id: nil,
-          match_type: 'exact',
+          match_type: 'child',
           count_limit: 1
         },
         #{
@@ -916,6 +892,6 @@
             related_template.save
         end
     end
-    RelatedNode.new(template_id: related_template.id.to_s, relationship: rel_node[:relationship], required: rel_node[:required], entity_id: rel_node[:entity_id], count_limit: rel_node[:count_limit], match_type: rel_node[:match_type])
+    RelatedNode.new(template_id: related_template.id.to_s, relationship: rel_node[:relationship], required: rel_node[:required], entity_id: rel_node[:entity_id], count_limit: rel_node[:count_limit], match_type: rel_node[:match_type], template_label: [rel_node[:node_label]])
   end
 end
