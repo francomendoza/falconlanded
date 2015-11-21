@@ -31,10 +31,12 @@ class EntitiesController < ApplicationController
 
   def autocomplete
     if params[:match_type] == 'exact'
-      results = Entity.search(Array.wrap(params[:node_label]), params[:term])
+      results = Entity.search_by_label(Array.wrap(params[:node_label]), params[:term])
     elsif params[:match_type] == 'child'
       children_templates = Template.find_by(node_label: params[:node_label]).children_templates
-      results = Entity.search(children_templates, params[:term])
+      results = Entity.search_by_label(children_templates, params[:term])
+    else
+      results = Entity.search(params[:term])
     end
     respond_to do |format|
       format.json do

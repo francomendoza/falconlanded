@@ -29,7 +29,23 @@ class Entity
       end
     end
 
-    def search(types, term)
+    def search(term)
+      response = elasticsearch.search(
+        index: 'entities',
+        body: {
+          query: {
+            prefix: {
+              _all: term
+            }
+          }
+        }
+      )
+      response['hits']['hits'].map do |hit|
+        Entity.new(id: hit['_id'], properties: hit['_source']['properties'], label: hit['_type'])
+      end
+    end
+
+    def search_by_label(types, term)
       or_types = types.map do |type|
         {type: {value: type}}
       end
