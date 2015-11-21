@@ -1,128 +1,108 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
+
+Template.delete_all
 [
-{
-    template_id: 1,
-    node_label: ["Container"],
-    node_properties: [
-        {
-            name: "name",
-            type: "text",
-            value: nil
-        }
-    ],
-    related_nodes: [],
-    children_templates: []
-},
-{
-    template_id: 2,
-    node_label: ["Location"],
-    node_properties: [
-        {
-            name: "city",
-            type: "text",
-            value: nil
-        },
-        {
-            name: "country",
-            type: "text",
-            value: nil
-        }
-    ],
-    related_nodes: [],
-    children_templates: []
-},
-{
-    template_id: 3,
-    node_label: ["Company"],
-    node_properties: [
-        {
-            name: "name",
-            type: "text",
-            value: nil
-        }
-    ],
-    related_nodes: [
-        {
-            template_id: 2,
-            node_label: "Location",
-            relationship: "located",
-            required: true,
-            entity_id: nil,
-            count_limit: -1,
-            match_type: "exact"
-        }
-    ],
-    children_templates: []
-},
-{
-    template_id: 4,
-    node_label: ["PartNumber"],
-    node_properties: [
-        {
-            name: "part_number",
-            type: "text",
-            value: nil
-        }
-    ],
-    related_nodes: [
-        {
-            template_id: 3, # entity_type == template
-            node_label: "Company",
-            relationship: "child_of",
-            required: true,
-            entity_id: nil,
-            count_limit: 1,
-            match_type: "exact" # entity_instance
-        }
-    ],
-    children_templates: []
-},
-{
-    template_id: 5,
-    node_label: ["Flask"],
-    node_properties: [
     {
-        name: "name",
-        type: "text",
-        value: nil
+        template_id: 1,
+        node_label: ["Container"],
+        node_properties: [
+            {
+                name: "name",
+                type: "text",
+                value: nil
+            }
+        ],
+        related_nodes: [],
+        children_templates: []
     },
     {
-        name: "max_volume",
-        type: "text",
-        value: nil
-    }
-    ],
+        node_label: ["Element"],
+        node_properties: [
+            {
+                name: "name",
+                type: "text",
+                value: nil
+            },
+            {
+                name: "symbol",
+                type: "text",
+                value: nil
+            },
+            {
+                name: "atomic number",
+                type: "text",
+                value: nil
+            }
+        ],
+        related_nodes: [],
+        children_templates: []
+    },
+    {
+        template_id: 2,
+        node_label: ["Location"],
+        node_properties: [
+            {
+                name: "city",
+                type: "text",
+                value: nil
+            },
+            {
+                name: "country",
+                type: "text",
+                value: nil
+            }
+        ],
+        related_nodes: [],
+        children_templates: []
+    },
+    {
+        template_id: 3,
+        node_label: ["Company"],
+        node_properties: [
+            {
+                name: "name",
+                type: "text",
+                value: nil
+            }
+        ],
         related_nodes: [
-        {
-            template_id: 1,
-            node_label: "Container",
-            relationship: "child_of",
-            required: true,
-            entity_id: nil,
-            count_limit: 1,
-            match_type: "exact" #(n:Container {name: "Flask"})
-        },
-        {
-            template_id: 4,
-            node_label: "PartNumber",
-            relationship: "has_part_number",
-            required: true,
-            entity_id: nil,
-            count_limit: 1,
-            match_type: "exact"
-        }
-    ],
-    children_templates: []
-},
-{
-        template_id: 6,
-        node_label: ["Plate"],
+            {
+                template_id: 2,
+                node_label: "Location",
+                relationship: "located",
+                required: true,
+                entity_id: nil,
+                count_limit: -1,
+                match_type: "exact"
+            }
+        ],
+        children_templates: []
+    },
+    {
+        template_id: 4,
+        node_label: ["PartNumber"],
+        node_properties: [
+            {
+                name: "part_number",
+                type: "text",
+                value: nil
+            }
+        ],
+        related_nodes: [
+            {
+                template_id: 3, # entity_type == template
+                node_label: "Company",
+                relationship: "child_of",
+                required: true,
+                entity_id: nil,
+                count_limit: 1,
+                match_type: "exact" # entity_instance
+            }
+        ],
+        children_templates: []
+    },
+    {
+        template_id: 5,
+        node_label: ["Flask"],
         node_properties: [
         {
             name: "name",
@@ -130,12 +110,7 @@
             value: nil
         },
         {
-            name: "well_volume",
-            type: "text",
-            value: nil
-        },
-        {
-            name: "number_of_wells",
+            name: "max_volume",
             type: "text",
             value: nil
         }
@@ -148,170 +123,162 @@
                 required: true,
                 entity_id: nil,
                 count_limit: 1,
-            match_type: "exact"
+                match_type: "exact" #(n:Container {name: "Flask"})
             },
             {
-                template_id: 3,
+                template_id: 4,
                 node_label: "PartNumber",
                 relationship: "has_part_number",
                 required: true,
                 entity_id: nil,
                 count_limit: 1,
-            match_type: "exact"
+                match_type: "exact"
             }
         ],
-    children_templates: []
-    },
-{
-    template_id: 7,
-    node_label: ["Box"],
-    node_properties: [
-    {
-        name: "name",
-        type: "text",
-        value: nil
+        children_templates: []
     },
     {
-        name: "max_quantity",
-        type: "text",
-        value: nil
-    }
-    ],
-        related_nodes: [
-        {
-            template_id: 1,
-            node_label: "Container",
-            relationship: "child_of",
-            required: true,
-            entity_id: nil,
-            count_limit: 1,
-            match_type: "exact"
+            template_id: 6,
+            node_label: ["Plate"],
+            node_properties: [
+            {
+                name: "name",
+                type: "text",
+                value: nil
+            },
+            {
+                name: "well_volume",
+                type: "text",
+                value: nil
+            },
+            {
+                name: "number_of_wells",
+                type: "text",
+                value: nil
+            }
+            ],
+                related_nodes: [
+                {
+                    template_id: 1,
+                    node_label: "Container",
+                    relationship: "child_of",
+                    required: true,
+                    entity_id: nil,
+                    count_limit: 1,
+                match_type: "exact"
+                },
+                {
+                    template_id: 3,
+                    node_label: "PartNumber",
+                    relationship: "has_part_number",
+                    required: true,
+                    entity_id: nil,
+                    count_limit: 1,
+                match_type: "exact"
+                }
+            ],
+        children_templates: []
         },
-        {
-            template_id: 4,
-            node_label: "PartNumber",
-            relationship: "has_part_number",
-            required: true,
-            entity_id: nil,
-            count_limit: 1,
-            match_type: "exact"
-        }
-    ],
-    children_templates: []
-},
-{
-    template_id: 8,
-    node_label: ["Equipment"],
-    node_properties: [
     {
-        name: "name",
-        type: "text",
-        value: nil
-    }
-    ],
-        related_nodes: []
-},
-{
-    node_label: ["pH Probe"],
-    node_properties: [
+        template_id: 7,
+        node_label: ["Box"],
+        node_properties: [
         {
             name: "name",
             type: "text",
             value: nil
-        }        
-    ],
-    related_nodes: [
-        {
-            node_label: "Equipment",
-            relationship: "child_of",
-            required: true,
-            entity_id: nil, #Equipment:pH Probe
-            count_limit: 1,
-            match_type: "exact"
         },
         {
-            node_label: "PartNumber",
-            relationship: "has_part_number",
-            required: true,
-            entity_id: nil,
-            count_limit: 1,
-            match_type: "exact"
+            name: "max_quantity",
+            type: "text",
+            value: nil
         }
-    ],
-    children_templates: []
-},
-{
-    template_id: 9,
-    node_label: ["Refrigerator"],
-    node_properties: [
-    {
-        name: "name",
-        type: "text",
-        value: nil
+        ],
+            related_nodes: [
+            {
+                template_id: 1,
+                node_label: "Container",
+                relationship: "child_of",
+                required: true,
+                entity_id: nil,
+                count_limit: 1,
+                match_type: "exact"
+            },
+            {
+                template_id: 4,
+                node_label: "PartNumber",
+                relationship: "has_part_number",
+                required: true,
+                entity_id: nil,
+                count_limit: 1,
+                match_type: "exact"
+            }
+        ],
+        children_templates: []
     },
     {
-        name: "size",
-        type: "text",
-        value: nil
-    },
-    {
-        name: "temperature",
-        type: "text",
-        value: nil
-    }
-    ],
-    related_nodes: [
-      {
-        template_id: 1,
-        node_label: "Container",
-        relationship: "child_of",
-        required: true,
-        entity_id: nil,
-        count_limit: 1,
-        match_type: "exact"
-      },
-      {
         template_id: 8,
-        node_label: "Equipment",
-        relationship: "child_of",
-        required: true,
-        entity_id: nil,
-        count_limit: 1,
-        match_type: "exact"
-      },
-      {
-        node_label: "PartNumber",
-        relationship: "has_part_number",
-        required: true,
-        entity_id: nil,
-        count_limit: 1,
-        match_type: "exact"
-      }
-    ],
-    children_templates: []
-},
-{
-    template_id: 10,
-    node_label: ["Freezer"],
-    node_properties: [
-    {
-        name: "name",
-        type: "text",
-        value: nil
-    },
-    {
-        name: "size",
-        type: "text",
-        value: nil
-    },
-    {
-        name: "temperature",
-        type: "text",
-        value: nil
-    }
-    ],
-        related_nodes: [
+        node_label: ["Equipment"],
+        node_properties: [
         {
+            name: "name",
+            type: "text",
+            value: nil
+        }
+        ],
+            related_nodes: []
+    },
+    {
+        node_label: ["pH Probe"],
+        node_properties: [
+            {
+                name: "name",
+                type: "text",
+                value: nil
+            }        
+        ],
+        related_nodes: [
+            {
+                node_label: "Equipment",
+                relationship: "child_of",
+                required: true,
+                entity_id: nil, #Equipment:pH Probe
+                count_limit: 1,
+                match_type: "exact"
+            },
+            {
+                node_label: "PartNumber",
+                relationship: "has_part_number",
+                required: true,
+                entity_id: nil,
+                count_limit: 1,
+                match_type: "exact"
+            }
+        ],
+        children_templates: []
+    },
+    {
+        template_id: 9,
+        node_label: ["Refrigerator"],
+        node_properties: [
+        {
+            name: "name",
+            type: "text",
+            value: nil
+        },
+        {
+            name: "size",
+            type: "text",
+            value: nil
+        },
+        {
+            name: "temperature",
+            type: "text",
+            value: nil
+        }
+        ],
+        related_nodes: [
+          {
             template_id: 1,
             node_label: "Container",
             relationship: "child_of",
@@ -319,8 +286,8 @@
             entity_id: nil,
             count_limit: 1,
             match_type: "exact"
-        },
-        {
+          },
+          {
             template_id: 8,
             node_label: "Equipment",
             relationship: "child_of",
@@ -328,20 +295,70 @@
             entity_id: nil,
             count_limit: 1,
             match_type: "exact"
-        },
-        {
-            template_id: 4,
+          },
+          {
             node_label: "PartNumber",
             relationship: "has_part_number",
             required: true,
             entity_id: nil,
             count_limit: 1,
             match_type: "exact"
+          }
+        ],
+        children_templates: []
+    },
+    {
+        template_id: 10,
+        node_label: ["Freezer"],
+        node_properties: [
+        {
+            name: "name",
+            type: "text",
+            value: nil
+        },
+        {
+            name: "size",
+            type: "text",
+            value: nil
+        },
+        {
+            name: "temperature",
+            type: "text",
+            value: nil
         }
-    ],
-    children_templates: []
-},
-{
+        ],
+            related_nodes: [
+            {
+                template_id: 1,
+                node_label: "Container",
+                relationship: "child_of",
+                required: true,
+                entity_id: nil,
+                count_limit: 1,
+                match_type: "exact"
+            },
+            {
+                template_id: 8,
+                node_label: "Equipment",
+                relationship: "child_of",
+                required: true,
+                entity_id: nil,
+                count_limit: 1,
+                match_type: "exact"
+            },
+            {
+                template_id: 4,
+                node_label: "PartNumber",
+                relationship: "has_part_number",
+                required: true,
+                entity_id: nil,
+                count_limit: 1,
+                match_type: "exact"
+            }
+        ],
+        children_templates: []
+    },
+    {
         template_id: 11,
         node_label: ["Vial"],
         node_properties: [
@@ -376,9 +393,9 @@
             match_type: "exact"
             }
         ],
-    children_templates: []
+        children_templates: []
     },
-{
+    {
         template_id: 12,
         node_label: ["Bottle"],
         node_properties: [
@@ -462,7 +479,16 @@
                 value: nil
             }
         ],
-        related_nodes: [],
+        related_nodes: [
+            {
+                node_label: "Element",
+                relationship: "has_element",
+                required: true,
+                entity_id: nil,
+                count_limit: -1,
+                match_type: "exact"
+            }
+        ],
     children_templates: []
     },
     {
@@ -486,7 +512,7 @@
                 node_label: "Sampleable",
                 relationship: "child_of",
                 required: false, #maybe true and provide an entity_id
-                entity_id: nil,
+                entity_id: nil, #node: Sampleable
                 count_limit: 1,
                 match_type: "exact"
             },
@@ -750,7 +776,7 @@
           required: true,
           relationship: 'contained_in',
           entity_id: nil,
-          match_type: 'leaves',
+          match_type: 'child',
           count_limit: 1
         }
       ]
@@ -801,6 +827,81 @@
         }
       ]
     },
+    {
+        node_label: ["1M_NaCl_Transformer"],
+        node_properties: [
+            {
+                name: 'description',
+                type: 'text',
+                value: nil
+            },
+            {
+                name: 'desired amount',
+                type: 'text',
+                value: nil
+            }
+        ],
+        related_nodes: [
+            {
+                node_label: "Sample",
+                relationship: 'has_input',
+                entity_id: nil,
+                required: true,
+                match_type: 'exact',
+                count_limit: 1,
+                direction: 'in'#,
+                # validations: [
+                #     { #would set the value, or serve as a validation
+                #         target: {
+                #             type: "related_nodes",
+                #             index: 0
+                #             key: "children_templates"
+                #         },
+                #         operand: "=" #necessary?
+                #         value: ["NaCl"]
+                #     },
+                #     {
+                #         target: related_node[1]
+                #         key: validations
+                #         value: [
+                #             {
+                #                target
+                #                key
+                #                value 
+                #             }
+                #         ]
+                #     }
+                # ]
+            },
+            {
+                node_label: "Sample",
+                relationship: 'has_input',
+                entity_id: nil,
+                required: true,
+                match_type: 'exact',
+                count_limit: 1,
+                direction: 'in'
+            },
+            {
+                node_label: "Sample",
+                relationship: 'has_output',
+                entity_id: nil,
+                required: true,
+                match_type: 'exact',
+                count_limit: 1,
+                direction: 'out'
+            },
+            {
+                node_label: "Equipment",
+                relationship: 'uses',
+                entity_id: nil,
+                required: false,
+                match_type: 'child',
+                count_limit: -1,
+                direction: 'in'
+            }
+        ]
+    }
     #{
       #node_label: ['Buffer', 'Transformer'],
       #node_properties: [
@@ -892,6 +993,6 @@
             related_template.save
         end
     end
-    RelatedNode.new(template_id: related_template.id.to_s, relationship: rel_node[:relationship], required: rel_node[:required], entity_id: rel_node[:entity_id], count_limit: rel_node[:count_limit], match_type: rel_node[:match_type], template_label: [rel_node[:node_label]])
+    RelatedNode.new(template_id: related_template.id.to_s, relationship: rel_node[:relationship], required: rel_node[:required], entity_id: rel_node[:entity_id], count_limit: rel_node[:count_limit], match_type: rel_node[:match_type], template_label: [rel_node[:node_label]], direction: rel_node[:direction] || "out")
   end
 end

@@ -7,7 +7,7 @@ class RelatedNode
   field :entity_id, type: Integer
   field :count_limit, type: Integer, default: 1
   field :match_type, type: String
-  field :direction, type: String, default: 'out'
+  field :direction, type: String
 
   field :template_label, type: Array
 

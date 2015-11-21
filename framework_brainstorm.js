@@ -117,3 +117,24 @@ concentration: {
 }
 absorbance
 etc.
+
+
+{
+  node_label: "Equilibration"
+  related_nodes: [
+    {
+      template_label: "Transformation" //or child_of AEX? probably not because this can be used widely, PERHAPS childof chromatography step trans...
+      relationship: "child_of"
+    }
+  ]
+}
+
+{
+  node_label: "AEX",
+  related_nodes: [
+    {
+      template_label
+    }
+  ]
+}
+

@@ -2,7 +2,7 @@ class EntityForm
   def initialize(entity_params)
     @id = nil
     @label = entity_params[:node_label]
-    @properties = initialize_properties(entity_params[:node_properties])
+    @properties = initialize_properties(entity_params[:node_properties]).merge(template_id: entity_params["_id"]["$oid"])
   end
 
   def data

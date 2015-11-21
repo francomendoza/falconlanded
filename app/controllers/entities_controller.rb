@@ -7,7 +7,7 @@ class EntitiesController < ApplicationController
     (params[:entity][:related_nodes] || []).each do |related_node|
       related_node[:entity_id].each do |entity_id|
         new_entity.create_rel(entity_id, related_node[:relationship], related_node[:direction])
-      end
+      end if related_node[:entity_id].present?
     end
 
     respond_to do |format|
@@ -39,6 +39,17 @@ class EntitiesController < ApplicationController
     respond_to do |format|
       format.json do
         render json: results.map(&:to_hash)
+      end
+    end
+  end
+
+  def child_templates
+    @neo = Neography::Rest.new
+    label = @neo.execute_query("match (n) where id(n)=#{params[:entity_id]} return labels(n)")['data'].flatten.first
+    results = Template.where({related_nodes: { '$elemMatch' => {template_label: label}}})
+    respond_to do |format|
+      format.json do
+        render json: results.map(&:node_label)
       end
     end
   end

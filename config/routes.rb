@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   resources :entities, only: [:create] do
     collection do
       get 'autocomplete'
+      get 'child_templates'
     end
   end
 
