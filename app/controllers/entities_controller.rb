@@ -17,6 +17,32 @@ class EntitiesController < ApplicationController
     end
   end
 
+  def show
+    @neo = Neography::Rest.new
+    query_result = @neo.execute_query("match (n:#{params[:node_label]})-[r*0..1]-(m) where id(n)=#{params[:id]} return n, m, r")
+
+    entity_result = query_result['data'].first.first
+    entity_data = entity_result['metadata'].merge(properties: entity_result['data'])
+    entity = Entity.new(entity_data)
+    related_entities_data = query_result["data"].each_with_object({}) do |result_group, obj|
+      _n, m, r = result_group
+      next if r.blank?
+      relationship_name = r.first['type']
+      obj[relationship_name] ||= []
+      related_entity_data = Entity.new(m['metadata'].merge(properties: m['data']))
+      obj[relationship_name] << related_entity_data
+    end.each_with_object([]) do |(relationship_name, array_of_entities), arr|
+      arr << ({ relationship: relationship_name, entities: array_of_entities })
+    end
+    response = {
+      entity: entity,
+      related_entities: related_entities_data
+    }
+    respond_to do |format|
+      format.json { render json: response }
+    end
+  end
+
   def entities_by_template_id
     node_label = Template.find(params[:template_id]).node_label
     @neo = Neography::Rest.new
@@ -44,6 +70,7 @@ class EntitiesController < ApplicationController
       end
     end
   end
+
 
   def child_templates
     @neo = Neography::Rest.new

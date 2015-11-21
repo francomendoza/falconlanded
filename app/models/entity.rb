@@ -4,7 +4,7 @@ class Entity
   # properties
   # relationships
   # dirty tracking?
-  attr_reader :id, :label
+  attr_reader :id, :labels
 
   class << self
     def all
@@ -12,7 +12,7 @@ class Entity
       all_nodes['data'].map do |node|
         Entity.new(
           id: node.first['metadata']['id'],
-          label: node.first['metadata']['labels'].first,
+          labels: node.first['metadata']['labels'],
           properties: node.first['data']
         )
       end
@@ -41,7 +41,7 @@ class Entity
         }
       )
       response['hits']['hits'].map do |hit|
-        Entity.new(id: hit['_id'], properties: hit['_source']['properties'], label: hit['_type'])
+        Entity.new(id: hit['_id'], properties: hit['_source']['properties'], labels: hit['_type'])
       end
     end
 
@@ -63,7 +63,7 @@ class Entity
         }
       )
       response['hits']['hits'].map do |hit|
-        Entity.new(id: hit['_id'], properties: hit['_source']['properties'], label: hit['_type'])
+        Entity.new(id: hit['_id'], properties: hit['_source']['properties'], labels: hit['_type'])
       end
     end
 
@@ -77,19 +77,20 @@ class Entity
   end
 
 
-  def initialize(id:, label:, properties:)
-    @id = id
-    @label = label
-    @properties = properties
+  def initialize(options = {})
+    o = options.with_indifferent_access
+    @id = o[:id]
+    @labels = o[:labels]
+    @properties = o[:properties]
   end
 
   def save
     new_node = neo.create_node(self.properties)
-    self.label.each do |node_label|
+    self.labels.each do |node_label|
       neo.add_label(new_node, node_label)
     end
     @id = new_node["metadata"]["id"]
-    @label.each do |label|
+    @labels.each do |label|
       elasticsearch.index index: 'entities', type: label, id: @id, body: {properties: @properties }
     end
     true
@@ -98,7 +99,7 @@ class Entity
   def to_hash
     {
       entity_id: self.id,
-      node_label: self.label,
+      node_label: self.labels,
       node_properties: self.properties_as_frontend
     }
   end
