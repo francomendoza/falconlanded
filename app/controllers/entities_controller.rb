@@ -19,7 +19,7 @@ class EntitiesController < ApplicationController
 
   def show
     @neo = Neography::Rest.new
-    query_result = @neo.execute_query("match (n:#{params[:node_label]})-[r*0..1]-(m) where id(n)=#{params[:id]} return n, m, r")
+    query_result = @neo.execute_query("match (n:`#{params[:node_label]}`)-[r*0..1]-(m) where id(n)=#{params[:id]} return n, m, r")
 
     entity_result = query_result['data'].first.first
     entity_data = entity_result['metadata'].merge(properties: entity_result['data'])
