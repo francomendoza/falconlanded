@@ -38,20 +38,121 @@ Template.delete_all
     },
     {
         template_id: 2,
-        node_label: ["Location"],
+        node_label: ["Country"],
         node_properties: [
             {
-                name: "city",
-                type: "text",
-                value: nil
-            },
-            {
-                name: "country",
+                name: "name",
                 type: "text",
                 value: nil
             }
         ],
         related_nodes: [],
+        children_templates: []
+    },
+    {
+        template_id: 2,
+        node_label: ["State"],
+        node_properties: [
+            {
+                name: "name",
+                type: "text",
+                value: nil
+            }
+        ],
+        related_nodes: [
+          {
+            template_id: 2,
+            node_label: "Country",
+            relationship: "in_country",
+            required: true,
+            entity_id: nil,
+            count_limit: 1,
+            match_type: "exact"
+          },
+        ],
+        children_templates: []
+    },
+    {
+        template_id: 2,
+        node_label: ["City"],
+        node_properties: [
+            {
+                name: "name",
+                type: "text",
+                value: nil
+            }
+        ],
+        related_nodes: [
+          {
+            template_id: 2,
+            node_label: "Country",
+            relationship: "in_country",
+            required: true,
+            entity_id: nil,
+            count_limit: 1,
+            match_type: "exact"
+          },
+          {
+            template_id: 2,
+            node_label: "State",
+            relationship: "in_state",
+            required: false,
+            entity_id: nil,
+            count_limit: 1,
+            match_type: "exact"
+          }
+        ],
+        children_templates: []
+    },
+    {
+        template_id: 2,
+        node_label: ["Building"],
+        node_properties: [
+            {
+                name: "name",
+                type: "text",
+                value: nil
+            },
+            {
+                name: "address",
+                type: "text",
+                value: nil
+            }
+        ],
+        related_nodes: [
+          {
+            template_id: 2,
+            node_label: "City",
+            relationship: "in_city",
+            required: true,
+            entity_id: nil,
+            count_limit: 1,
+            match_type: "exact"
+          }
+        ],
+        children_templates: []
+    },
+    {
+        template_id: 2,
+        node_label: ["Room"],
+        node_properties: [
+            {
+                name: "name/number",
+                type: "text",
+                value: nil
+            }
+        ],
+        related_nodes: [
+          {
+            template_id: 2,
+            node_label: "Building",
+            relationship: "in_building",
+            required: true,
+            entity_id: nil,
+            count_limit: 1,
+            match_type: "exact"
+          }
+        ],
         children_templates: []
     },
     {
@@ -67,7 +168,7 @@ Template.delete_all
         related_nodes: [
             {
                 template_id: 2,
-                node_label: "Location",
+                node_label: "City",
                 relationship: "located",
                 required: true,
                 entity_id: nil,

@@ -22,6 +22,17 @@ class Entity
       neo.get_node(id)
     end
 
+    def find_node(label, properties)
+      all_nodes = neo.execute_query("match (n:#{label} {#{properties.keys.first}: '#{properties.values.first}'}) return n;")
+      all_nodes['data'].map do |node|
+        Entity.new(
+          id: node.first['metadata']['id'],
+          labels: node.first['metadata']['labels'],
+          properties: node.first['data']
+        )
+      end.first
+    end
+
     def create(template_instance_hash)
       new_entity = Entity.new(template_instance_hash)
       if new_entity.save
