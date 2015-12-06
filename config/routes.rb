@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     collection do
       get 'autocomplete'
       get 'child_templates'
+      post 'shortest_path'
     end
   end
 

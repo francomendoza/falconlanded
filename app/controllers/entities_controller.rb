@@ -71,6 +71,10 @@ class EntitiesController < ApplicationController
     end
   end
 
+  def shortest_path
+    @neo = Neography::Rest.new
+    results = @neo.execute_query("match (n),(m), p=shortestpath((n)-[r*]-(m)) where id(n)=#{params[:ids].first} and id(m)=#{params[:ids].second} return n,m,p")
+  end
 
   def child_templates
     @neo = Neography::Rest.new

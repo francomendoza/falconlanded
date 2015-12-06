@@ -45,14 +45,32 @@ class Entity
         index: 'entities',
         body: {
           query: {
-            prefix: {
-              _all: term
+            "match_phrase_prefix": {
+              "_all": term.downcase
             }
           }
         }
       )
-      response['hits']['hits'].map do |hit|
-        Entity.new(id: hit['_id'], properties: hit['_source']['properties'], labels: hit['_type'])
+      if response['hits']['total'] == 0
+        new_response = elasticsearch.search(
+          index: 'entities',
+          body: {
+            query: {
+              "multi_match": {
+                "fields":  "_all",
+                "query": term.downcase,
+                "fuzziness": "AUTO"
+              }
+            }
+          }
+        )
+        new_response['hits']['hits'].map do |hit|
+          Entity.new(id: hit['_id'], properties: hit['_source']['properties'], labels: hit['_type'])
+        end
+      else
+        response['hits']['hits'].map do |hit|
+          Entity.new(id: hit['_id'], properties: hit['_source']['properties'], labels: hit['_type'])
+        end
       end
     end
 
@@ -76,6 +94,11 @@ class Entity
       response['hits']['hits'].map do |hit|
         Entity.new(id: hit['_id'], properties: hit['_source']['properties'], labels: hit['_type'])
       end
+    end
+
+    def delete_all
+      neo.execute_query 'match (n)-[r]-(m) delete r,n,m;'
+      neo.execute_query 'match (n) delete n;'
     end
 
     def neo
@@ -102,7 +125,7 @@ class Entity
     end
     @id = new_node["metadata"]["id"]
     @labels.each do |label|
-      elasticsearch.index index: 'entities', type: label, id: @id, body: {properties: @properties }
+      elasticsearch.index index: 'entities', type: label, id: @id, body: {properties: @properties, label: label }
     end
     true
   end
