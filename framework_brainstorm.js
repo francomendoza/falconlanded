@@ -127,13 +127,75 @@ etc.
       relationship: "child_of"
     }
   ]
-}
-
+},
 {
-  node_label: "AEX",
+  node_label: "Chrom Step Transformer",
+  node_properties: [
+    {
+        name: "name",
+        type: "text",
+        value: null,
+        readonly: false
+    },
+    {
+        name: "linear velocity",
+        type: "text",
+        value: null,
+        readonly: false
+    }
+  ],
   related_nodes: [
     {
-      template_label
+      node_label: "Sample",
+      relationship: "has_element",
+      required: true,
+      entity_id: nil,
+      count_limit: -1,
+      match_type: "exact"
+    }
+  ]
+},
+{
+  node_label: "AEX Transformer",
+  node_properties: [
+
+  ],
+  related_nodes: [
+    {
+      template_label: "Chrom Step Transformer",
+      relationship: "sub_transformer_of",
+      required: true,
+      entity_id: null,
+      count_limit: -1,
+      match_type: "exact",
+      validations: [
+        {
+          type: "node_properties",
+          index: 0, //name property
+          replace_with: {
+            value: "Equilibration",
+            readonly: true
+          }
+        },
+        {
+          type: "node_properties",
+          index: 1, //linear flowrate property
+          replace_with: {
+            value: "200cm/hr" // preferably some variable we bind
+          }
+        },
+        {
+          type: "related_nodes",
+          index: 0,
+          replace_with: {
+            validations: [
+              {
+                
+              }
+            ]
+          }
+        }
+      ]
     }
   ]
 }

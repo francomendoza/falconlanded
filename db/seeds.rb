@@ -3,7 +3,7 @@ Template.delete_all
 [
     {
         template_id: 1,
-        node_label: ["Container"],
+        node_label: ["ContainerType"],
         node_properties: [
             {
                 name: "name",
@@ -13,6 +13,12 @@ Template.delete_all
         ],
         related_nodes: [],
         children_templates: []
+    },
+    {
+        node_label: ["Sampleable"],
+        node_properties: [],
+        related_nodes: [],
+        children_templates: []   
     },
     {
         node_label: ["Element"],
@@ -203,28 +209,28 @@ Template.delete_all
     },
     {
         template_id: 5,
-        node_label: ["Flask"],
+        node_label: ["FlaskType"],
         node_properties: [
-        {
-            name: "name",
-            type: "text",
-            value: nil
-        },
-        {
-            name: "max_volume",
-            type: "text",
-            value: nil
-        }
+            {
+                name: "name",
+                type: "text",
+                value: nil
+            },
+            {
+                name: "max_volume",
+                type: "text",
+                value: nil
+            }
         ],
-            related_nodes: [
+        related_nodes: [
             {
                 template_id: 1,
-                node_label: "Container",
+                node_label: "ContainerType",
                 relationship: "child_of",
                 required: true,
                 entity_id: nil,
                 count_limit: 1,
-                match_type: "exact" #(n:Container {name: "Flask"})
+                match_type: "exact" #(n:ContainerType {name: "Flask"})
             },
             {
                 template_id: 4,
@@ -239,9 +245,39 @@ Template.delete_all
         children_templates: []
     },
     {
-            template_id: 6,
-            node_label: ["Plate"],
-            node_properties: [
+        template_id: 5,
+        node_label: ["FlaskLot"],
+        node_properties: [
+            {
+                name: "Lot Number",
+                type: "text",
+                value: nil
+            }
+        ],
+        related_nodes: [
+            {
+                node_label: "FlaskType",
+                relationship: "lot_of",
+                required: true,
+                entity_id: nil,
+                count_limit: 1,
+                match_type: "exact"
+            },
+            {
+                node_label: "Sampleable",
+                relationship: "child_of",
+                required: false, #maybe true and provide an entity_id
+                entity_id: nil, #node: Sampleable
+                count_limit: 1,
+                match_type: "exact"
+            }
+        ],
+        children_templates: []
+    },
+    {
+        template_id: 6,
+        node_label: ["Plate"],
+        node_properties: [
             {
                 name: "name",
                 type: "text",
@@ -257,29 +293,29 @@ Template.delete_all
                 type: "text",
                 value: nil
             }
-            ],
-                related_nodes: [
-                {
-                    template_id: 1,
-                    node_label: "Container",
-                    relationship: "child_of",
-                    required: true,
-                    entity_id: nil,
-                    count_limit: 1,
+        ],
+        related_nodes: [
+            {
+                template_id: 1,
+                node_label: "ContainerType",
+                relationship: "child_of",
+                required: true,
+                entity_id: nil,
+                count_limit: 1,
                 match_type: "exact"
-                },
-                {
-                    template_id: 3,
-                    node_label: "PartNumber",
-                    relationship: "has_part_number",
-                    required: true,
-                    entity_id: nil,
-                    count_limit: 1,
+            },
+            {
+                template_id: 3,
+                node_label: "PartNumber",
+                relationship: "has_part_number",
+                required: true,
+                entity_id: nil,
+                count_limit: 1,
                 match_type: "exact"
-                }
-            ],
+            }
+        ],
         children_templates: []
-        },
+    },
     {
         template_id: 7,
         node_label: ["Box"],
@@ -298,7 +334,7 @@ Template.delete_all
             related_nodes: [
             {
                 template_id: 1,
-                node_label: "Container",
+                node_label: "ContainerType",
                 relationship: "child_of",
                 required: true,
                 entity_id: nil,
@@ -354,6 +390,14 @@ Template.delete_all
                 entity_id: nil,
                 count_limit: 1,
                 match_type: "exact"
+            },
+            {
+                node_label: "Room",
+                relationship: "located_in",
+                required: true,
+                entity_id: nil,
+                count_limit: 1,
+                match_type: "exact"
             }
         ],
         children_templates: []
@@ -381,7 +425,7 @@ Template.delete_all
         related_nodes: [
           {
             template_id: 1,
-            node_label: "Container",
+            node_label: "ContainerType",
             relationship: "child_of",
             required: true,
             entity_id: nil,
@@ -431,7 +475,7 @@ Template.delete_all
             related_nodes: [
             {
                 template_id: 1,
-                node_label: "Container",
+                node_label: "ContainerType",
                 relationship: "child_of",
                 required: true,
                 entity_id: nil,
@@ -477,7 +521,7 @@ Template.delete_all
         related_nodes: [
             {
                 template_id: 1,
-                node_label: "Container",
+                node_label: "ContainerType",
                 relationship: "child_of",
                 required: true,
                 entity_id: nil,
@@ -514,7 +558,7 @@ Template.delete_all
         related_nodes: [
             {
                 template_id: 1,
-                node_label: "Container",
+                node_label: "ContainerType",
                 relationship: "child_of",
                 required: true,
                 entity_id: nil,
@@ -551,7 +595,7 @@ Template.delete_all
         related_nodes: [
             {
                 template_id: 1,
-                node_label: "Container",
+                node_label: "ContainerType",
                 relationship: "child_of",
                 required: true,
                 entity_id: nil,
@@ -591,12 +635,6 @@ Template.delete_all
             }
         ],
     children_templates: []
-    },
-    {
-        node_label: ["Sampleable"],
-        node_properties: [],
-        related_nodes: [],
-        children_templates: []   
     },
     {
         template_id: 15,
@@ -873,7 +911,7 @@ Template.delete_all
           #count_limit: -1
         #},
         {
-          node_label: 'Container',
+          node_label: 'ContainerType',
           required: true,
           relationship: 'contained_in',
           entity_id: nil,

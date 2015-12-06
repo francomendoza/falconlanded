@@ -1,6 +1,7 @@
 namespace :custom_seed do
 	desc 'Seed all entities'
 	task :entities => :environment do
+		`curl -XDELETE http://localhost:9200/entities`
 		seed_hash = {
 		  "96": {
 		    "_id": {
@@ -282,17 +283,14 @@ namespace :custom_seed do
 		  }
 		}
 		seed_hash.each do |id, hash|
-			puts hash
 			puts "Creating #{hash[:node_label]}"
+			hash[:_id][:$oid] = Template.find_by(node_label: hash[:node_label].first).id.to_s
 			ef = EntityForm.new(hash)
 			new_entity = Entity.new(ef.data)
 			new_entity.save
 			(hash[:related_nodes] || []).each do |related_node|
 				related_node[:entity_id].each do |old_entity_id|
 					node_data = seed_hash[old_entity_id.to_sym]
-					puts node_data
-					puts node_data[:node_properties]
-					puts node_data[:node_properties].first
 					existing_entity = Entity.find_node(node_data[:node_label].first, {node_data[:node_properties].first[:name] => node_data[:node_properties].first[:value]})
 					new_entity.create_rel(existing_entity.id, related_node[:relationship], related_node[:direction])
 				end if related_node[:entity_id].present?
