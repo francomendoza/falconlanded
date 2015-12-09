@@ -73,7 +73,47 @@ class EntitiesController < ApplicationController
 
   def shortest_path
     @neo = Neography::Rest.new
-    results = @neo.execute_query("match (n),(m), p=shortestpath((n)-[r*]-(m)) where id(n)=#{params[:ids].first} and id(m)=#{params[:ids].second} return n,m,p")
+    total_counter = 0
+    node_array = []
+    node_id_array = []
+    s_array =[]
+    shortestpath_array = []
+    params[:ids].each.with_index do |entity_id, index|
+      node_array << "(n#{index})"
+      node_id_array << "id(n#{index})=#{entity_id}"
+      (index+1..params[:ids].length-1).each.with_index do |next_id, j|
+        s_array << "s#{total_counter}"
+        shortestpath_array << "s#{total_counter}=allShortestPaths((n#{index})-[*]-(n#{next_id}))"
+        total_counter+=1
+      end
+    end
+
+    query = "match " + node_array.join(', ') + ', ' + shortestpath_array.join(', ') + " where " + node_id_array.join(' and ') + " return " + s_array.join(', ')
+
+    results = @neo.execute_query(query)
+
+    results_ids = Hash.new(0)
+
+    results["data"][0].each do |path|
+      path["nodes"].each do |node|
+        id = node[-3..-1].to_i
+        if !params["ids"].include? id
+          results_ids[id] += 1
+        end
+      end
+    end
+
+    nodes = @neo.execute_query("match (n) where id(n) in #{results_ids.keys} return n")["data"].map do |node|
+      result_data = Entity.new(node[0]["metadata"].merge(properties: node[0]["data"]))
+
+      result_data.to_hash.merge({"_score": results_ids[result_data.id]})
+    end
+    
+    respond_to do |format|
+      format.json do
+        render json: nodes.sort_by {|e| e[:_score]}.reverse
+      end
+    end
   end
 
   def child_templates

@@ -4,7 +4,7 @@ class Entity
   # properties
   # relationships
   # dirty tracking?
-  attr_reader :id, :labels
+  attr_reader :id, :labels, :properties
 
   class << self
     def all
@@ -138,9 +138,6 @@ class Entity
     }
   end
 
-  def properties
-    @properties
-  end
 
   def properties_as_frontend
     @properties.each.with_object([]) do |(key, value), obj|
