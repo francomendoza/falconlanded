@@ -147,7 +147,7 @@ etc.
   related_nodes: [
     {
       node_label: "Sample",
-      relationship: "has_element",
+      relationship: "has_output",
       required: true,
       entity_id: nil,
       count_limit: -1,
@@ -155,10 +155,18 @@ etc.
     }
   ]
 },
+
+
+
 {
   node_label: "AEX Transformer",
   node_properties: [
-
+    {
+        name: "linear velocity",
+        type: "text",
+        value: null,
+        readonly: false
+    }
   ],
   related_nodes: [
     {
@@ -168,7 +176,43 @@ etc.
       entity_id: null,
       count_limit: -1,
       match_type: "exact",
-      validations: [
+      instructions: [
+        {
+          type: "node_properties",
+          index: 0, //name property
+          replace_with: {
+            value: "PreEquilibration",
+            readonly: true
+          }
+        },
+        {
+          type: "node_properties",
+          index: 1, //linear flowrate property
+          replace_with: {
+            value: parent.node_properties[0].value // preferably some variable we bind
+          }
+        },
+        {
+          type: "related_nodes",
+          index: 0,
+          replace_with: {
+            instructions: [
+              {
+
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      template_label: "Chrom Step Transformer", //Equilibration
+      relationship: "sub_transformer_of",
+      required: true,
+      entity_id: null,
+      count_limit: -1,
+      match_type: "exact",
+      instructions: [
         {
           type: "node_properties",
           index: 0, //name property
@@ -186,13 +230,19 @@ etc.
         },
         {
           type: "related_nodes",
-          index: 0,
+          index: 0, // sample input from
           replace_with: {
-            validations: [
-              {
-                
+            //
+            entity_id: parent.related_nodes[0].related_nodes[3].entity_id, // AEX's 1st related node (AKA PreEq) 1st related node (AKA Sample Out Resin)
+            // or
+            {
+              databind: {
+                type: "related_nodes",
+                index: 0,
+
               }
-            ]
+            }
+            //
           }
         }
       ]
