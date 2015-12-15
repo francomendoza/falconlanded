@@ -3,7 +3,7 @@ Template.delete_all
 [
     {
         template_id: 1,
-        node_label: ["ContainerType"],
+        node_label: ["Container"],
         node_properties: [
             {
                 name: "name",
@@ -209,7 +209,7 @@ Template.delete_all
     },
     {
         template_id: 5,
-        node_label: ["FlaskType"],
+        node_label: ["Flask"],
         node_properties: [
             {
                 name: "name",
@@ -225,12 +225,29 @@ Template.delete_all
         related_nodes: [
             {
                 template_id: 1,
-                node_label: "ContainerType",
+                node_label: "Container",
                 relationship: "child_of",
                 required: true,
                 entity_id: nil,
                 count_limit: 1,
-                match_type: "exact" #(n:ContainerType {name: "Flask"})
+                match_type: "exact", #(n:Container {name: "Flask"})
+                instructions: [
+                  {
+                    type: 'node_property',
+                    index: 0,
+                    replace_with: {
+                      value: 'Flask',
+                      readonly: true
+                    }
+                  },
+                  {
+                    type: "node_properties",
+                    binding: true,
+                    index: 0, 
+                    bind_to: 'node_properties[0]',
+                    key: 'value'
+                  }
+                ]
             },
             {
                 template_id: 4,
@@ -256,7 +273,7 @@ Template.delete_all
         ],
         related_nodes: [
             {
-                node_label: "FlaskType",
+                node_label: "Flask",
                 relationship: "lot_of",
                 required: true,
                 entity_id: nil,
@@ -297,7 +314,7 @@ Template.delete_all
         related_nodes: [
             {
                 template_id: 1,
-                node_label: "ContainerType",
+                node_label: "Container",
                 relationship: "child_of",
                 required: true,
                 entity_id: nil,
@@ -334,7 +351,7 @@ Template.delete_all
             related_nodes: [
             {
                 template_id: 1,
-                node_label: "ContainerType",
+                node_label: "Container",
                 relationship: "child_of",
                 required: true,
                 entity_id: nil,
@@ -425,7 +442,7 @@ Template.delete_all
         related_nodes: [
           {
             template_id: 1,
-            node_label: "ContainerType",
+            node_label: "Container",
             relationship: "child_of",
             required: true,
             entity_id: nil,
@@ -475,7 +492,7 @@ Template.delete_all
             related_nodes: [
             {
                 template_id: 1,
-                node_label: "ContainerType",
+                node_label: "Container",
                 relationship: "child_of",
                 required: true,
                 entity_id: nil,
@@ -521,7 +538,7 @@ Template.delete_all
         related_nodes: [
             {
                 template_id: 1,
-                node_label: "ContainerType",
+                node_label: "Container",
                 relationship: "child_of",
                 required: true,
                 entity_id: nil,
@@ -558,7 +575,7 @@ Template.delete_all
         related_nodes: [
             {
                 template_id: 1,
-                node_label: "ContainerType",
+                node_label: "Container",
                 relationship: "child_of",
                 required: true,
                 entity_id: nil,
@@ -595,7 +612,7 @@ Template.delete_all
         related_nodes: [
             {
                 template_id: 1,
-                node_label: "ContainerType",
+                node_label: "Container",
                 relationship: "child_of",
                 required: true,
                 entity_id: nil,
@@ -911,7 +928,7 @@ Template.delete_all
           #count_limit: -1
         #},
         {
-          node_label: 'ContainerType',
+          node_label: 'Container',
           required: true,
           relationship: 'contained_in',
           entity_id: nil,
@@ -1040,7 +1057,99 @@ Template.delete_all
                 direction: 'in'
             }
         ]
-    }
+    },
+    #{
+        #node_label: ["Chromatography Step"],
+        #node_properties: [
+            #{
+                #name: 'name',
+                #type: 'text',
+                #value: nil
+            #},
+            #{
+                #name: 'description',
+                #type: 'text',
+                #value: nil
+            #},
+            #{
+              #name: 'linear_velocity',
+              #type: 'text',
+              #value: nil
+            #},
+            #{
+              #name: 'column_volumes',
+              #type: 'text',
+              #value: nil
+            #}
+        #],
+        #related_nodes: [
+            #{
+                #node_label: "Sample",
+                #relationship: 'has_input',
+                #entity_id: nil,
+                #required: true,
+                #match_type: 'exact',
+                #count_limit: 2,
+                #direction: 'in'
+            #},
+            #{
+                #node_label: "Sample",
+                #relationship: 'has_output',
+                #entity_id: nil,
+                #required: true,
+                #match_type: 'exact',
+                #count_limit: 2,
+                #direction: 'out'
+            #},
+            #{
+                #node_label: "Equipment",
+                #relationship: 'uses',
+                #entity_id: nil,
+                #required: false,
+                #match_type: 'child',
+                #count_limit: -1,
+                #direction: 'in'
+            #}
+        #]
+
+    #},
+    #{
+        #node_label: ["Chromatography Transformation"],
+        #node_properties: [
+            #{
+                #name: 'name',
+                #type: 'text',
+                #value: nil
+            #},
+            #{
+                #name: 'description',
+                #type: 'text',
+                #value: nil
+            #},
+            #{
+              #name: 'linear_velocity',
+              #type: 'text',
+              #value: nil
+            #},
+            #{
+              #name: 'column_volumes',
+              #type: 'text',
+              #value: nil
+            #}
+        #],
+        #related_nodes: [
+            #{
+                #node_label: "Chromatography Step",
+                #relationship: 'has_input',
+                #entity_id: nil,
+                #required: true,
+                #match_type: 'exact',
+                #count_limit: -1,
+                #direction: 'in'
+            #}
+        #]
+
+    #}
     #{
       #node_label: ['Buffer', 'Transformer'],
       #node_properties: [
@@ -1132,6 +1241,15 @@ Template.delete_all
             related_template.save
         end
     end
-    RelatedNode.new(template_id: related_template.id.to_s, relationship: rel_node[:relationship], required: rel_node[:required], entity_id: rel_node[:entity_id], count_limit: rel_node[:count_limit], match_type: rel_node[:match_type], template_label: [rel_node[:node_label]], direction: rel_node[:direction] || "out")
+    RelatedNode.new(template_id: related_template.id.to_s,
+                    relationship: rel_node[:relationship],
+                    required: rel_node[:required],
+                    entity_id: rel_node[:entity_id],
+                    count_limit: rel_node[:count_limit],
+                    match_type: rel_node[:match_type],
+                    template_label: [rel_node[:node_label]],
+                    direction: rel_node[:direction] || "out",
+                    instructions: rel_node[:instructions] || []
+                   )
   end
 end

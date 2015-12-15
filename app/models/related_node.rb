@@ -10,6 +10,7 @@ class RelatedNode
   field :direction, type: String
 
   field :template_label, type: Array
+  field :instructions, type: Array
 
   embedded_in :template
 end

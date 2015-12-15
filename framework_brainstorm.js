@@ -230,10 +230,13 @@ etc.
         },
         {
           type: "related_nodes",
+          binding: true,
           index: 0, // sample input from
-          replace_with: {
-            //
-            entity_id: parent.related_nodes[0].related_nodes[3].entity_id, // AEX's 1st related node (AKA PreEq) 1st related node (AKA Sample Out Resin)
+          bind_to: parent.related_nodes,
+          key: 'entity_id'
+          //replace_with: {
+            
+            //entity_id: parent.related_nodes[0].related_nodes[3].entity_id, // AEX's 1st related node (AKA PreEq) 1st related node (AKA Sample Out Resin)
             // or
             {
               databind: {
