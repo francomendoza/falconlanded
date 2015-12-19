@@ -232,18 +232,18 @@ Template.delete_all
                 count_limit: 1,
                 match_type: "exact", #(n:Container {name: "Flask"})
                 instructions: [
+                  #{
+                    #type: 'node_property',
+                    #index: 0,
+                    #replace_with: {
+                      #value: 'Flask',
+                      #readonly: true
+                    #}
+                  #},
                   {
-                    type: 'node_property',
-                    index: 0,
-                    replace_with: {
-                      value: 'Flask',
-                      readonly: true
-                    }
-                  },
-                  {
-                    type: "node_properties",
+                    type: "node_property",
                     binding: true,
-                    index: 0, 
+                    index: 0,
                     bind_to: 'node_properties[0]',
                     key: 'value'
                   }
@@ -256,7 +256,16 @@ Template.delete_all
                 required: true,
                 entity_id: nil,
                 count_limit: 1,
-                match_type: "exact"
+                match_type: "exact",
+                instructions: [
+                  {
+                    type: 'related_node',
+                    binding: true,
+                    index: 0,
+                    bind_to: 'related_nodes[0]',
+                    key: 'entity_id'
+                  }
+                ]
             }
         ],
         children_templates: []
@@ -1058,98 +1067,110 @@ Template.delete_all
             }
         ]
     },
-    #{
-        #node_label: ["Chromatography Step"],
-        #node_properties: [
-            #{
-                #name: 'name',
-                #type: 'text',
-                #value: nil
-            #},
-            #{
-                #name: 'description',
-                #type: 'text',
-                #value: nil
-            #},
-            #{
-              #name: 'linear_velocity',
-              #type: 'text',
-              #value: nil
-            #},
-            #{
-              #name: 'column_volumes',
-              #type: 'text',
-              #value: nil
-            #}
-        #],
-        #related_nodes: [
-            #{
-                #node_label: "Sample",
-                #relationship: 'has_input',
-                #entity_id: nil,
-                #required: true,
-                #match_type: 'exact',
-                #count_limit: 2,
-                #direction: 'in'
-            #},
-            #{
-                #node_label: "Sample",
-                #relationship: 'has_output',
-                #entity_id: nil,
-                #required: true,
-                #match_type: 'exact',
-                #count_limit: 2,
-                #direction: 'out'
-            #},
-            #{
-                #node_label: "Equipment",
-                #relationship: 'uses',
-                #entity_id: nil,
-                #required: false,
-                #match_type: 'child',
-                #count_limit: -1,
-                #direction: 'in'
-            #}
-        #]
+    {
+        node_label: ["Chromatography Step"],
+        node_properties: [
+            {
+                name: 'name',
+                type: 'text',
+                value: nil
+            },
+            {
+                name: 'description',
+                type: 'text',
+                value: nil
+            },
+            {
+              name: 'linear_velocity',
+              type: 'text',
+              value: nil
+            },
+            {
+              name: 'column_volumes',
+              type: 'text',
+              value: nil
+            }
+        ],
+        related_nodes: [
+            {
+                node_label: "Sample",
+                relationship: 'has_input',
+                entity_id: nil,
+                required: true,
+                match_type: 'exact',
+                count_limit: 2,
+                direction: 'in'
+            },
+            {
+                node_label: "Sample",
+                relationship: 'has_output',
+                entity_id: nil,
+                required: true,
+                match_type: 'exact',
+                count_limit: 2,
+                direction: 'out'
+            },
+            {
+                node_label: "Equipment",
+                relationship: 'uses',
+                entity_id: nil,
+                required: false,
+                match_type: 'child',
+                count_limit: -1,
+                direction: 'in'
+            }
+        ]
 
-    #},
-    #{
-        #node_label: ["Chromatography Transformation"],
-        #node_properties: [
-            #{
-                #name: 'name',
-                #type: 'text',
-                #value: nil
-            #},
-            #{
-                #name: 'description',
-                #type: 'text',
-                #value: nil
-            #},
-            #{
-              #name: 'linear_velocity',
-              #type: 'text',
-              #value: nil
-            #},
-            #{
-              #name: 'column_volumes',
-              #type: 'text',
-              #value: nil
-            #}
-        #],
-        #related_nodes: [
-            #{
-                #node_label: "Chromatography Step",
-                #relationship: 'has_input',
-                #entity_id: nil,
-                #required: true,
-                #match_type: 'exact',
-                #count_limit: -1,
-                #direction: 'in'
-            #}
-        #]
+    },
+    {
+        node_label: ["Chromatography Transformation"],
+        node_properties: [
+            {
+                name: 'name',
+                type: 'text',
+                value: nil
+            },
+            {
+                name: 'description',
+                type: 'text',
+                value: nil
+            },
+            {
+              name: 'linear_velocity',
+              type: 'text',
+              value: nil
+            },
+            {
+              name: 'column_volumes',
+              type: 'text',
+              value: nil
+            }
+        ],
+        related_nodes: [
+            {
+                node_label: "Chromatography Step",
+                relationship: 'has_input',
+                entity_id: nil,
+                required: true,
+                match_type: 'exact',
+                count_limit: -1,
+                direction: 'in',
+                instructions: [
+                  {
+                    type: 'node_property',
+                    binding: true,
+                    bind_to: 'node_properties[2]',
+                    index: 2,
+                    key: 'value',
+                    replace_with: {
+                      readonly: true
+                    }
+                  }
+                ]
+            }
+        ]
 
-    #}
+    }
     #{
       #node_label: ['Buffer', 'Transformer'],
       #node_properties: [
