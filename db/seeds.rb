@@ -601,7 +601,7 @@ Template.delete_all
             match_type: "exact"
             }
         ],
-    children_templates: []
+        children_templates: []
     },
     {
         template_id: 13,
@@ -626,7 +626,7 @@ Template.delete_all
                 required: true,
                 entity_id: nil,
                 count_limit: 1,
-            match_type: "exact"
+                match_type: "exact"
             },
             {
                 template_id: 3,
@@ -635,10 +635,10 @@ Template.delete_all
                 required: true,
                 entity_id: nil,
                 count_limit: 1,
-            match_type: "exact"
+                match_type: "exact"
             }
         ],
-    children_templates: []
+        children_templates: []
     },
     {
         template_id: 14,
@@ -660,11 +660,11 @@ Template.delete_all
                 match_type: "exact"
             }
         ],
-    children_templates: []
+        children_templates: []
     },
     {
         template_id: 15,
-        node_label: ["Vendor NaCl Salt"],
+        node_label: ["Vendored NaCl"],
         node_properties: [
           {
             name: "name",
@@ -673,24 +673,53 @@ Template.delete_all
           }
         ],
         related_nodes: [
-          {
-            template_id: 14,
-            node_label: "Compound",
-            relationship: "child_of",
-            required: true,
-            entity_id: nil,
-            count_limit: 1,
-            match_type: "exact"
-          },
-          {
-            template_id: 3,
-            node_label: "PartNumber",
-            relationship: "has_part_number",
-            required: true,
-            entity_id: nil,
-            count_limit: 1,
-            match_type: "exact"
-          }
+            {
+                template_id: 14,
+                node_label: "Compound",
+                relationship: "child_of",
+                required: true,
+                entity_id: nil,
+                count_limit: 1,
+                match_type: "exact"
+            },
+            {
+                template_id: 3,
+                node_label: "PartNumber",
+                relationship: "has_part_number",
+                required: true,
+                entity_id: nil,
+                count_limit: 1,
+                match_type: "exact"
+            }
+        ],
+        children_templates: []
+    },
+    {
+        node_label: ["Vendored NaCl Lot"],
+        node_properties: [
+            {
+                name: "Lot Number",
+                type: "text",
+                value: nil
+            }
+        ],
+        related_nodes: [
+            {
+                node_label: "Sampleable",
+                relationship: "child_of",
+                required: false, #maybe true and provide an entity_id
+                entity_id: nil, #node: Sampleable
+                count_limit: 1,
+                match_type: "exact"
+            },
+            {
+                node_label: "Vendored NaCl",
+                relationship: "child_of",
+                required: true,
+                entity_id: nil,
+                count_limit: 1,
+                match_type: "child"
+            }
         ],
         children_templates: []
     },
@@ -729,49 +758,49 @@ Template.delete_all
         template_id: 17,
         node_label: ["Person"],
         node_properties: [
-        {
-            name: "first_name",
-            type: "text",
-            value: nil
-        },
-        {
-            name: "last_name",
-            type: "text",
-            value: nil
-        },
-        {
-            name: 'email',
-            type: "text",
-            value: nil
-        }
+            {
+                name: "first_name",
+                type: "text",
+                value: nil
+            },
+            {
+                name: "last_name",
+                type: "text",
+                value: nil
+            },
+            {
+                name: 'email',
+                type: "text",
+                value: nil
+            }
         ],
-            related_nodes: [],
-    children_templates: []
+        related_nodes: [],
+        children_templates: []
     },
     {
         template_id: 18,
         node_label: ["Year"],
         node_properties: [
-        {
-            name: 'year',
-            type: 'text',
-            type: nil
-        }
+            {
+                name: 'year',
+                type: 'text',
+                type: nil
+            }
         ],
-            related_nodes: [],
-    children_templates: []
+        related_nodes: [],
+        children_templates: []
     },
     {
         template_id: 19,
         node_label: ["Month"],
         node_properties: [
-        {
-            name: 'month',
-            type: 'text',
-            type: nil
-        }
+            {
+                name: 'month',
+                type: 'text',
+                type: nil
+            }
         ],
-            related_nodes: [
+        related_nodes: [
             {
                 template_id: 18,
                 node_label: "Year",
@@ -779,10 +808,10 @@ Template.delete_all
                 required: true,
                 entity_id: nil,
                 count_limit: 1,
-            match_type: "exact"
+                match_type: "exact"
             }
         ],
-    children_templates: []
+        children_templates: []
     },
     {
         template_id: 20,
@@ -811,13 +840,13 @@ Template.delete_all
         template_id: 21,
         node_label: ["Hour"],
         node_properties: [
-        {
-            name: 'time',
-            type: 'text',
-            type: nil
-        }
+            {
+                name: 'time',
+                type: 'text',
+                type: nil
+            }
         ],
-            related_nodes: [
+        related_nodes: [
             {
                 template_id: 20,
                 node_label: "Day",
@@ -828,19 +857,19 @@ Template.delete_all
                 match_type: "exact"
             }
         ],
-    children_templates: []
+        children_templates: []
     },
     {
         template_id: 21,
         node_label: ["Minute"],
         node_properties: [
-        {
-            name: 'time',
-            type: 'text',
-            value: nil
-        }
+            {
+                name: 'time',
+                type: 'text',
+                value: nil
+            }
         ],
-            related_nodes: [
+        related_nodes: [
             {
                 template_id: 20,
                 node_label: "Hour",
@@ -848,10 +877,10 @@ Template.delete_all
                 required: true,
                 entity_id: nil,
                 count_limit: 1,
-            match_type: "exact"
+                match_type: "exact"
             }
         ],
-    children_templates: []
+        children_templates: []
     },
     {
         template_id: 21,
@@ -877,23 +906,71 @@ Template.delete_all
         children_templates: []
     },
     {
-      template_id: 22,
-      node_label: ["Instrument"],
-      node_properties: [{
-        name: 'name',
-        type: 'text',
-        value: nil
-      }],
+        template_id: 22,
+        node_label: ["Instrument"],
+        node_properties: [
+            {
+                name: 'name',
+                type: 'text',
+                value: nil
+            }
+        ],
+        related_nodes: [
+            {
+                template_id: 8,
+                node_label: 'Equipment',
+                relationship: 'child_of',
+                required: true,
+                entity_id: nil,
+                match_type: 'exact',
+                count_limit: 1
+            }
+        ]
+    },
+       {
+      template_id: 23,
+      node_label: ["Measurement"],
+      node_properties: [
+        {
+          name: 'alias',
+          type: 'text',
+          value: nil
+        },
+        {
+          name: 'type',
+          type: 'text',
+          value: nil
+        },
+        {
+          name: 'value',
+          type: 'text',
+          value: nil
+        },
+        {
+          name: 'unit',
+          type: 'text',
+          value: nil
+        }
+      ],
       related_nodes: [
         {
-          template_id: 8,
-          node_label: 'Equipment',
-          relationship: 'child_of',
-          required: true,
+          template_id: 22,
+          node_label: "Equipment",
+          relationship: 'measured_by',
           entity_id: nil,
-          match_type: 'exact',
+          required: true,
+          match_type: 'child',
           count_limit: 1
-        }
+        }#,
+        # {
+        #   node_label: "Sample",
+        #   relationship: 'has_measurement',
+        #   entity_id: nil,
+        #   required: true,
+        #   match_type: 'exact',
+        #   count_limit: 1,
+        #   direction: 'in'
+        # }
       ]
     },
      {
@@ -928,14 +1005,14 @@ Template.delete_all
           #match_type: 'exact',
           #count_limit: 1
         #},
-        #{
-          #node_label: "Measurement",
-          #required: false,
-          #relationship: 'has_measurement',
-          #entity_id: nil,
-          #match_type: 'exact',
-          #count_limit: -1
-        #},
+        {
+          node_label: "Measurement",
+          required: false,
+          relationship: 'has_measurement',
+          entity_id: nil,
+          match_type: 'exact',
+          count_limit: -1
+        },
         {
           node_label: 'Container',
           required: true,
@@ -943,52 +1020,6 @@ Template.delete_all
           entity_id: nil,
           match_type: 'child',
           count_limit: 1
-        }
-      ]
-    },
-   {
-      template_id: 23,
-      node_label: ["Measurement"],
-      node_properties: [
-        {
-          name: 'alias',
-          type: 'text',
-          value: nil
-        },
-        {
-          name: 'type',
-          type: 'text',
-          value: nil
-        },
-        {
-          name: 'value',
-          type: 'text',
-          value: nil
-        },
-        {
-          name: 'unit',
-          type: 'text',
-          value: nil
-        }
-      ],
-      related_nodes: [
-        {
-          template_id: 22,
-          node_label: "Equipment",
-          relationship: 'measured_by',
-          entity_id: nil,
-          required: true,
-          match_type: 'child',
-          count_limit: 1
-        },
-        {
-          node_label: "Sample",
-          relationship: 'has_measurement',
-          entity_id: nil,
-          required: true,
-          match_type: 'exact',
-          count_limit: 1,
-          direction: 'in'
         }
       ]
     },
@@ -1044,38 +1075,14 @@ Template.delete_all
                 count_limit: 1,
                 direction: 'in',
                 instructions: [
-                  {
-                    type: 'related_node',
-                    index:  0,
-                    replace_with: {
-                      value: "NaCl",
-                      readonly: true
+                    {
+                        type: 'node_property',
+                        index: 1,
+                        replace_with: {
+                            value: "NaCl"
+                        }
                     }
-                  }
                 ]
-                #"match (p:NaCl Salt), (n:Sample)-[*]->(p), return n"
-                # validations: [
-                #     { #would set the value, or serve as a validation
-                #         target: {
-                #             type: "related_nodes",
-                #             index: 0
-                #             key: "children_templates"
-                #         },
-                #         operand: "=" #necessary?
-                #         value: ["NaCl"]
-                #     },
-                #     {
-                #         target: related_node[1]
-                #         key: validations
-                #         value: [
-                #             {
-                #                target
-                #                key
-                #                value 
-                #             }
-                #         ]
-                #     }
-                # ]
             },
             {
                 node_label: "Sample",
@@ -1084,7 +1091,16 @@ Template.delete_all
                 required: true,
                 match_type: 'exact',
                 count_limit: 1,
-                direction: 'in'
+                direction: 'in',
+                instructions: [
+                    {
+                        type: 'node_property',
+                        index: 1,
+                        replace_with: {
+                            value: "RODI"
+                        }
+                    }
+                ]
             },
             {
                 node_label: "Sample",
@@ -1137,7 +1153,16 @@ Template.delete_all
                 entity_id: nil,
                 required: true,
                 match_type: 'exact',
-                count_limit: 2,
+                count_limit: 1,
+                direction: 'in'
+            },
+            {
+                node_label: "Sample",
+                relationship: 'has_input',
+                entity_id: nil,
+                required: true,
+                match_type: 'exact',
+                count_limit: 1,
                 direction: 'in'
             },
             {
@@ -1146,7 +1171,16 @@ Template.delete_all
                 entity_id: nil,
                 required: true,
                 match_type: 'exact',
-                count_limit: 2,
+                count_limit: 1,
+                direction: 'out'
+            },
+            {
+                node_label: "Sample",
+                relationship: 'has_output',
+                entity_id: nil,
+                required: true,
+                match_type: 'exact',
+                count_limit: 1,
                 direction: 'out'
             },
             {
@@ -1159,7 +1193,6 @@ Template.delete_all
                 direction: 'in'
             }
         ]
-
     },
     {
         node_label: ["Chromatography Transformation"],
@@ -1175,14 +1208,9 @@ Template.delete_all
                 value: nil
             },
             {
-              name: 'linear_velocity',
-              type: 'text',
-              value: nil
-            },
-            {
-              name: 'column_volumes',
-              type: 'text',
-              value: nil
+                name: 'linear_velocity',
+                type: 'text',
+                value: nil
             }
         ],
         related_nodes: [
@@ -1192,23 +1220,78 @@ Template.delete_all
                 entity_id: nil,
                 required: true,
                 match_type: 'exact',
-                count_limit: -1,
+                count_limit: 1,
                 direction: 'in',
                 instructions: [
-                  {
-                    type: 'node_property',
-                    binding: true,
-                    bind_to: 'node_properties[2]',
-                    index: 2,
-                    key: 'value',
-                    replace_with: {
-                      readonly: true
+                    {
+                        type: 'node_property',
+                        index: 0,
+                        replace_with: {
+                            value: 'Pre-Equilibration'
+                        }
+                    },
+                    {
+                        type: 'node_property',
+                        binding: true,
+                        bind_to: 'node_properties[2]',
+                        index: 2,
+                        key: 'value',
+                        replace_with: {
+                            readonly: true
+                        }
+                    },
+                    {
+                        type: 'node_property',
+                        index: 3,
+                        replace_with: {
+                            value: '2'
+                        }
                     }
-                  }
+                ]
+            },
+            {
+                node_label: "Chromatography Step",
+                relationship: 'has_input',
+                entity_id: nil,
+                required: true,
+                match_type: 'exact',
+                count_limit: 1,
+                direction: 'in',
+                instructions: [
+                    {
+                        type: 'node_property',
+                        index: 0,
+                        replace_with: {
+                            value: 'Equilibration'
+                        }
+                    },
+                    {
+                        type: 'node_property',
+                        binding: true,
+                        bind_to: 'node_properties[2]',
+                        index: 2,
+                        key: 'value',
+                        replace_with: {
+                            readonly: true
+                        }
+                    },
+                    {
+                        type: 'node_property',
+                        index: 3,
+                        replace_with: {
+                            value: '2'
+                        }
+                    },
+                    {
+                        type: 'related_nodes',
+                        binding: true,
+                        bind_to: 'related_nodes[0].related_nodes[2]',
+                        index: 0,
+                        key: 'entity_id'
+                    }
                 ]
             }
         ]
-
     }
     #{
       #node_label: ['Buffer', 'Transformer'],
