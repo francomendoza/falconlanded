@@ -18,20 +18,20 @@ class TemplatesController < ApplicationController
   def template_collector(templates_array, template_label)
     template = Template.find_by(node_label: template_label)
 
-      templates_array << template
+    templates_array << template
 
-      template.related_nodes.map do |related_node|
+    template.related_nodes.map do |related_node|
 
-        if(related_node[:match_type] != 'exact')
+      if(related_node[:match_type] != 'exact')
 
-          related_node[:children_templates] = Template.find_by(node_label: related_node[:template_label][0]).children_templates.each do |child_template_label|
-            template_collector(templates_array, child_template_label)
-          end
-
-        else
-          template_collector(templates_array, related_node[:template_label][0])
+        related_node[:children_templates] = Template.find_by(node_label: related_node[:template_label][0]).children_templates.each do |child_template_label|
+          template_collector(templates_array, child_template_label)
         end
+
+      else
+        template_collector(templates_array, related_node[:template_label][0])
       end
+    end
 
     templates_array
   end

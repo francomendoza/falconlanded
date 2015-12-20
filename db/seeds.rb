@@ -664,41 +664,33 @@ Template.delete_all
     },
     {
         template_id: 15,
-        node_label: ["Salt"],
+        node_label: ["Vendor NaCl Salt"],
         node_properties: [
-            {
-                name: "name",
-                type: "text",
-                value: nil
-            }
+          {
+            name: "name",
+            type: "text",
+            value: nil
+          }
         ],
         related_nodes: [
-            {
-                node_label: "Sampleable",
-                relationship: "child_of",
-                required: false, #maybe true and provide an entity_id
-                entity_id: nil, #node: Sampleable
-                count_limit: 1,
-                match_type: "exact"
-            },
-            {
-                template_id: 14,
-                node_label: "Compound",
-                relationship: "child_of",
-                required: true,
-                entity_id: nil,
-                count_limit: 1,
-                match_type: "exact"
-            },
-            {
-                template_id: 3,
-                node_label: "PartNumber",
-                relationship: "has_part_number",
-                required: true,
-                entity_id: nil,
-                count_limit: 1,
+          {
+            template_id: 14,
+            node_label: "Compound",
+            relationship: "child_of",
+            required: true,
+            entity_id: nil,
+            count_limit: 1,
             match_type: "exact"
-            }
+          },
+          {
+            template_id: 3,
+            node_label: "PartNumber",
+            relationship: "has_part_number",
+            required: true,
+            entity_id: nil,
+            count_limit: 1,
+            match_type: "exact"
+          }
         ],
         children_templates: []
     },
@@ -929,6 +921,14 @@ Template.delete_all
           count_limit: 1
         },
         #{
+          #node_label: "Sampleable",
+          #required: true,
+          #relationship: 'child_of',
+          #entity_id: nil,
+          #match_type: 'exact',
+          #count_limit: 1
+        #},
+        #{
           #node_label: "Measurement",
           #required: false,
           #relationship: 'has_measurement',
@@ -993,6 +993,34 @@ Template.delete_all
       ]
     },
     {
+      node_label: ["NaCl Lot"],
+      node_properties: [
+        {
+          name: 'lot number',
+          type: 'text',
+          value: nil
+        }
+      ],
+      related_nodes: [
+        {
+          node_label: "Vendor NaCl Salt",
+          relationship: "lot_of",
+          entity_id: nil,
+          required: true,
+          match_type: 'exact',
+          count_limit: 1
+        },
+        {
+          node_label: "Sampleable",
+          relationship: "child_of",
+          required: false, #maybe true and provide an entity_id
+          entity_id: nil, #node: Sampleable
+          count_limit: 1,
+          match_type: "exact"
+        }
+      ]
+    },
+    {
         node_label: ["1M_NaCl_Transformer"],
         node_properties: [
             {
@@ -1014,7 +1042,18 @@ Template.delete_all
                 required: true,
                 match_type: 'exact',
                 count_limit: 1,
-                direction: 'in'#,
+                direction: 'in',
+                instructions: [
+                  {
+                    type: 'related_node',
+                    index:  0,
+                    replace_with: {
+                      value: "NaCl",
+                      readonly: true
+                    }
+                  }
+                ]
+                #"match (p:NaCl Salt), (n:Sample)-[*]->(p), return n"
                 # validations: [
                 #     { #would set the value, or serve as a validation
                 #         target: {
