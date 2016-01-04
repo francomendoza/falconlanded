@@ -12,6 +12,7 @@ class RelatedNode
   field :template_label, type: Array
   field :instructions, type: Array
   field :view_label, type: String
+  field :visible, type: Boolean, default: true
 
   embedded_in :template
 end

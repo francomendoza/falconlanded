@@ -18,7 +18,7 @@ Template.delete_all
         node_label: ["Sampleable"],
         node_properties: [],
         related_nodes: [],
-        children_templates: []   
+        children_templates: []
     },
     {
         node_label: ["Element"],
@@ -295,7 +295,8 @@ Template.delete_all
                 required: false, #maybe true and provide an entity_id
                 entity_id: nil, #node: Sampleable
                 count_limit: 1,
-                match_type: "exact"
+                match_type: "exact",
+                visible: false
             }
         ],
         children_templates: []
@@ -398,7 +399,7 @@ Template.delete_all
                 name: "name",
                 type: "text",
                 value: nil
-            }        
+            }
         ],
         related_nodes: [
             {
@@ -710,7 +711,8 @@ Template.delete_all
                 required: false, #maybe true and provide an entity_id
                 entity_id: nil, #node: Sampleable
                 count_limit: 1,
-                match_type: "exact"
+                match_type: "exact",
+                visible: false
             },
             {
                 node_label: "Vendored NaCl",
@@ -733,7 +735,7 @@ Template.delete_all
                 value: nil
             }
         ],
-        related_nodes: [        
+        related_nodes: [
             {
                 template_id: 3,
                 node_label: "PartNumber",
@@ -995,7 +997,8 @@ Template.delete_all
           relationship: 'child_of',
           entity_id: nil,
           match_type: 'exact',
-          count_limit: 1
+          count_limit: 1,
+          visible: false
         },
         {
           node_label: "Measurement",
@@ -1051,7 +1054,8 @@ Template.delete_all
                 relationship: 'child_of',
                 entity_id: nil,
                 match_type: 'exact',
-                count_limit: 1
+                count_limit: 1,
+                visible: false
             },
             {
                 node_label: "1M NaCl",
@@ -1170,7 +1174,7 @@ Template.delete_all
         ],
         related_nodes: [
 
-        ]    
+        ]
     },
     {
         node_label: ["Vendored Resin"],
@@ -1198,7 +1202,7 @@ Template.delete_all
                 count_limit: 1,
                 match_type: "exact"
             }
-        ]    
+        ]
     },
     {
         node_label: ["Vendored Resin Lot"],
@@ -1224,9 +1228,10 @@ Template.delete_all
                 required: true,
                 entity_id: nil,
                 count_limit: 1,
-                match_type: "exact"
+                match_type: "exact",
+                visible: false
             }
-        ]    
+        ]
     },
     {
         node_label: ["Column Housing"],
@@ -1599,7 +1604,8 @@ Template.delete_all
                     template_label: [rel_node[:node_label]],
                     direction: rel_node[:direction] || "out",
                     instructions: rel_node[:instructions] || [],
-                    view_label: rel_node[:view_label]
+                    view_label: rel_node[:view_label],
+                    visible: (rel_node[:visible] == false ? rel_node[:visible] : true)
                    )
   end
 end
