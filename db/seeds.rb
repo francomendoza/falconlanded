@@ -718,7 +718,7 @@ Template.delete_all
                 required: true,
                 entity_id: nil,
                 count_limit: 1,
-                match_type: "child"
+                match_type: "exact"
             }
         ],
         children_templates: []
@@ -733,15 +733,7 @@ Template.delete_all
                 value: nil
             }
         ],
-        related_nodes: [
-            {
-                node_label: "Sampleable",
-                relationship: "child_of",
-                required: false, #maybe true and provide an entity_id
-                entity_id: nil,
-                count_limit: 1,
-                match_type: "exact"
-            },        
+        related_nodes: [        
             {
                 template_id: 3,
                 node_label: "PartNumber",
@@ -927,7 +919,7 @@ Template.delete_all
             }
         ]
     },
-       {
+   {
       template_id: 23,
       node_label: ["Measurement"],
       node_properties: [
@@ -973,7 +965,7 @@ Template.delete_all
         # }
       ]
     },
-     {
+    {
       template_id: 24,
       node_label: ["Sample"],
       node_properties: [
@@ -997,14 +989,14 @@ Template.delete_all
           match_type: 'child',
           count_limit: 1
         },
-        #{
-          #node_label: "Sampleable",
-          #required: true,
-          #relationship: 'child_of',
-          #entity_id: nil,
-          #match_type: 'exact',
-          #count_limit: 1
-        #},
+        {
+          node_label: "Sampleable",
+          required: true,
+          relationship: 'child_of',
+          entity_id: nil,
+          match_type: 'exact',
+          count_limit: 1
+        },
         {
           node_label: "Measurement",
           required: false,
@@ -1024,32 +1016,52 @@ Template.delete_all
       ]
     },
     {
-      node_label: ["NaCl Lot"],
-      node_properties: [
-        {
-          name: 'lot number',
-          type: 'text',
-          value: nil
-        }
-      ],
-      related_nodes: [
-        {
-          node_label: "Vendor NaCl Salt",
-          relationship: "lot_of",
-          entity_id: nil,
-          required: true,
-          match_type: 'exact',
-          count_limit: 1
-        },
-        {
-          node_label: "Sampleable",
-          relationship: "child_of",
-          required: false, #maybe true and provide an entity_id
-          entity_id: nil, #node: Sampleable
-          count_limit: 1,
-          match_type: "exact"
-        }
-      ]
+        node_label: ["1M NaCl"],
+        node_properties: [
+            {
+                name: 'name',
+                type: 'text',
+                value: nil
+            }
+        ],
+        related_nodes: [
+            {
+                node_label: "Solution",
+                relationship: 'child_of',
+                entity_id: nil, #solution for 1M NaCl?
+                required: true,
+                match_type: 'exact',
+                count_limit: 1
+            }
+        ]
+    },
+    {
+        node_label: ["1M NaCl Lot"],
+        node_properties: [
+            {
+                name: 'Lot Number',
+                type: 'text',
+                value: nil
+            }
+        ],
+        related_nodes: [
+            {
+                node_label: "Sampleable",
+                required: true,
+                relationship: 'child_of',
+                entity_id: nil,
+                match_type: 'exact',
+                count_limit: 1
+            },
+            {
+                node_label: "1M NaCl",
+                relationship: 'child_of',
+                entity_id: nil,
+                required: true,
+                match_type: 'exact',
+                count_limit: 1
+            }
+        ]
     },
     {
         node_label: ["1M_NaCl_Transformer"],
@@ -1109,7 +1121,32 @@ Template.delete_all
                 required: true,
                 match_type: 'exact',
                 count_limit: 1,
-                direction: 'out'
+                direction: 'out',
+                instructions: [
+                    {
+                        type: 'node_property',
+                        index: 1,
+                        replace_with: {
+                            value: "1M NaCl"
+                        }
+                    },
+                    {
+                        type: "related_node",
+                        index: 0,
+                        replace_with: {
+                            default_child: "1M NaCl Lot",
+                            instructions: [
+                                {
+                                    type: 'node_property',
+                                    index: 0,
+                                    replace_with: {
+                                        value: "New Lots"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
             },
             {
                 node_label: "Equipment",
@@ -1119,6 +1156,166 @@ Template.delete_all
                 match_type: 'child',
                 count_limit: -1,
                 direction: 'in'
+            }
+        ]
+    },
+    {
+        node_label: ["Resin Type"],
+        node_properties: [
+            {
+                name: 'name',
+                type: 'text',
+                value: nil
+            }
+        ],
+        related_nodes: [
+
+        ]    
+    },
+    {
+        node_label: ["Vendored Resin"],
+        node_properties: [
+            {
+                name: 'name',
+                type: 'text',
+                value: nil
+            }
+        ],
+        related_nodes: [
+            {
+                node_label: "Resin Type",
+                relationship: 'has_type',
+                entity_id: nil,
+                required: true,
+                match_type: 'exact',
+                count_limit: 1
+            },
+            {
+                node_label: "PartNumber",
+                relationship: "has_part_number",
+                required: true,
+                entity_id: nil,
+                count_limit: 1,
+                match_type: "exact"
+            }
+        ]    
+    },
+    {
+        node_label: ["Vendored Resin Lot"],
+        node_properties: [
+            {
+                name: 'Lot Number',
+                type: 'text',
+                value: nil
+            }
+        ],
+        related_nodes: [
+            {
+                node_label: "Vendored Resin",
+                relationship: 'lot_of',
+                entity_id: nil,
+                required: true,
+                match_type: 'exact',
+                count_limit: 1
+            },
+            {
+                node_label: "Sampleable",
+                relationship: "child_of",
+                required: true,
+                entity_id: nil,
+                count_limit: 1,
+                match_type: "exact"
+            }
+        ]    
+    },
+    {
+        node_label: ["Column Housing"],
+        node_properties: [
+            {
+                name: 'name',
+                type: 'text',
+                value: nil
+            },
+            {
+                name: 'maximum bed height',
+                type: 'text',
+                value: nil
+            },
+            {
+                name: 'diameter',
+                type: 'text',
+                value: nil
+            }
+        ],
+        related_nodes: [
+            {
+                node_label: "PartNumber",
+                relationship: "has_part_number",
+                required: true,
+                entity_id: nil,
+                count_limit: 1,
+                match_type: "exact"
+            }
+        ]
+    },
+    {
+        node_label: ["Packed Column"],
+        node_properties: [
+            {
+                name: 'name',
+                type: 'text',
+                value: nil
+            },
+            {
+                name: 'initial bed height',
+                type: 'text',
+                value: nil
+            }
+        ],
+        related_nodes: [
+            {
+                node_label: "Column Housing",
+                relationship: 'uses_housing',
+                entity_id: nil,
+                required: true,
+                match_type: 'exact',
+                count_limit: 1
+            },
+            {
+                node_label: "Sample",
+                relationship: 'uses_resin',
+                entity_id: nil,
+                required: true,
+                match_type: 'exact',
+                count_limit: 1
+            }
+        ]
+    },
+    {
+        node_label: ["Packed Column State"],
+        node_properties: [
+            {
+                name: 'name',
+                type: 'text',
+                value: nil
+            }
+        ],
+        related_nodes: [
+            {
+                node_label: "Packed Column",
+                relationship: 'time_of',
+                entity_id: nil,
+                required: true,
+                match_type: 'exact',
+                count_limit: 1
+            },
+            {
+                node_label: "Sample",
+                relationship: 'uses_resin',
+                entity_id: nil,
+                required: true,
+                match_type: 'exact',
+                count_limit: 1
             }
         ]
     },
@@ -1191,6 +1388,14 @@ Template.delete_all
                 match_type: 'child',
                 count_limit: -1,
                 direction: 'in'
+            },
+            {
+                node_label: "Packed Column State",
+                relationship: 'uses',
+                entity_id: nil,
+                required: false,
+                match_type: 'exact',
+                count_limit: 1
             }
         ]
     },
@@ -1216,7 +1421,8 @@ Template.delete_all
         related_nodes: [
             {
                 node_label: "Chromatography Step",
-                relationship: 'has_input',
+                view_label: "Pre-Equilibration Step",
+                relationship: 'is_sub_transformer_of',
                 entity_id: nil,
                 required: true,
                 match_type: 'exact',
@@ -1246,12 +1452,61 @@ Template.delete_all
                         replace_with: {
                             value: '2'
                         }
+                    },
+                    {
+                        type: 'related_node',
+                        index: 0,
+                        replace_with: {
+                            view_label: "Input Resin",
+                            instructions: [
+                                {
+                                    type: 'related_node',
+                                    index: 0,
+                                    replace_with: {
+                                        default_child: 'Vendored Resin Lot'
+                                    }
+                                },
+                                {
+                                    type: 'related_node',
+                                    index: 4,
+                                    replace_with: {
+                                        template_label: ["Packed Column State"],
+                                        relationship: 'uses',
+                                        entity_id: nil,
+                                        required: false,
+                                        match_type: 'exact',
+                                        count_limit: 1
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        type: 'related_node',
+                        index: 1,
+                        replace_with: {
+                            view_label: "Input Buffer"
+                        }
+                    },
+                    {
+                        type: 'related_node',
+                        index: 2,
+                        replace_with: {
+                            view_label: "Output Resin"
+                        }
+                    },
+                    {
+                        type: 'related_node',
+                        index: 3,
+                        replace_with: {
+                            view_label: "Output Buffer"
+                        }
                     }
                 ]
             },
             {
                 node_label: "Chromatography Step",
-                relationship: 'has_input',
+                relationship: 'is_sub_transformer_of',
                 entity_id: nil,
                 required: true,
                 match_type: 'exact',
@@ -1287,85 +1542,36 @@ Template.delete_all
                         binding: true,
                         bind_to: 'related_nodes[0].related_nodes[2]',
                         index: 0,
-                        key: 'entity_id'
+                        key: 'entity_id',
+                        replace_with: {
+                            view_label: "Input Resin"
+                        }
+                    },
+                    {
+                        type: 'related_node',
+                        index: 1,
+                        replace_with: {
+                            view_label: "Input Buffer"
+                        }
+                    },
+                    {
+                        type: 'related_node',
+                        index: 2,
+                        replace_with: {
+                            view_label: "Output Resin"
+                        }
+                    },
+                    {
+                        type: 'related_node',
+                        index: 3,
+                        replace_with: {
+                            view_label: "Output Buffer"
+                        }
                     }
                 ]
             }
         ]
     }
-    #{
-      #node_label: ['Buffer', 'Transformer'],
-      #node_properties: [
-        #{
-          #name: 'name',
-          #type: 'text',
-          #value: '1M NaCl'
-        #},
-        #{
-          #name: 'description',
-          #type: 'text',
-          #value: nil
-        #}
-      #],
-      #related_nodes: [
-        #{
-          #node_label: "H2O",
-          #required: true,
-          #relationship: 'input',
-          #entity_id: nil,
-          #match_type: 'sample',
-          #count_limit: 1,
-          #vaidation_parameters: [
-            #name: ''
-          #],
-          #direction: 'in'
-        #},
-        #{
-          #node_label: "NaCl",
-          #required: true,
-          #relationship: 'input',
-          #entity_id: nil,
-          #match_type: 'sample',
-          #count_limit: 1,
-          #direction: 'in'
-        #},
-        #{
-          #node_label: "NaCl Solution",
-          #required: true,
-          #relationship: 'output',
-          #entity_id: nil,
-          #match_type: 'sample',
-          #count_limit: 1,
-          #direction: 'out'
-        #}
-      #]
-    #},
-    #{
-      #node_label: ['Loading', 'Transformer'],
-      #node_properties: [],
-      #related_nodes: [
-        #{
-          #node_label: 'Column',
-          #relationship: 'has_column'
-        #},
-        #{
-          #node_label: 'FPLC',
-          #relationship: 'uses'
-        #},
-        #{
-          #node_label: 'Sample',
-          #relationship: 'input'
-        #},
-        #{
-          #node_label: 'Buffer',
-          #relationship: 'input'
-        #},
-        #{
-          #node_label: 'Buffer',
-          #relationship: 'input'
-        #},
-      #]
-    #}
 ].each do |temp|
     # binding.pry
   temptemp = Template.create(node_label: temp[:node_label], children_templates: temp[:children_templates])
@@ -1392,7 +1598,8 @@ Template.delete_all
                     match_type: rel_node[:match_type],
                     template_label: [rel_node[:node_label]],
                     direction: rel_node[:direction] || "out",
-                    instructions: rel_node[:instructions] || []
+                    instructions: rel_node[:instructions] || [],
+                    view_label: rel_node[:view_label]
                    )
   end
 end

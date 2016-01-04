@@ -22,15 +22,14 @@ class TemplatesController < ApplicationController
 
     template.related_nodes.map do |related_node|
 
-      if(related_node[:match_type] != 'exact')
-
-        related_node[:children_templates] = Template.find_by(node_label: related_node[:template_label][0]).children_templates.each do |child_template_label|
-          template_collector(templates_array, child_template_label)
-        end
-
-      else
-        template_collector(templates_array, related_node[:template_label][0])
+      if(related_node[:match_type] == 'child')
+        related_node[:children_templates] = Template.find_by(node_label: related_node[:template_label][0]).children_templates
+        # if(related_node[:default_child])
+        #   template_collector(templates_array, related_node[:default_child])
+        # end
       end
+
+        template_collector(templates_array, related_node[:template_label][0])
     end
 
     templates_array
