@@ -253,3 +253,313 @@ etc.
   ]
 }
 
+// NodeModelDecorator
+{
+  name: 'lot',
+  node_properties: [
+    "lot_number"
+  ]
+}
+
+
+// NodeModel
+{
+  node_model_id: 1235,
+  node_label: "vendored salt",
+  node_properties: [
+    {
+      "name"
+    }
+  ]
+},
+{
+  node_model_id: 1234,
+  node_label: "vendored salt lot",
+  node_properties: [
+    {
+      "lot number"
+    }
+  ] 
+}
+
+
+// Tyler the Creator // Workflow // CreationTemplate
+{
+  to_create_node: 1234,
+  node_types: [ // what nodes are used and they should be created
+    {
+      node_model_id: 1234 //vendored salt lot
+    },
+    {
+      node_model_id: 1235 //vendored salt
+    }
+  ],
+  relationships: [
+    {
+      1234
+      1235
+      direction: forward
+      relationship: "is lot of"
+    }
+  ],
+  sections: [ // define workflow and what UI looks like
+    {
+      inputs: [
+        {
+          type: search,
+          1235,
+          creatable: true
+        },
+        {
+          type: text,
+          node: 1234
+          node_property: 'lot number'
+        }
+      ]
+    }
+  ]
+}
+
+{
+  node_model_id: 1,
+  node_label: "1M NaCl Transformer",
+  node_properties: [
+    {
+      name: "desired amount",
+      type: "number_with_unit"
+    }
+  ]
+},
+{
+  node_model_id: 2,
+  node_label: "Sample",
+  node_properties: [
+    {
+      name: "desired amount",
+      type: "number_with_unit"
+    }
+  ]
+},
+{
+  node_model_id: 3,
+  node_label: 'RODI Tap',
+  node_properties: [
+    {
+      name: 'name',
+      type: 'text'
+    }
+  ]
+},
+{
+  node_model_id: 4,
+  node_label: 'Lot',
+  node_properties: [
+    {
+      name: 'lot_number',
+      type: 'text'
+    }
+  ]
+},
+{
+  node_model_id: 5,
+  node_label: 'Vendored 5M NaCl',
+  node_properties: [
+  ]
+},
+{
+  node_model_id: 6,
+  node_label: '1M NaCl',
+  node_properties: []
+},
+{
+  node_model_id: 7,
+  node_label: '1M NaCl lot',
+  node_properties: []
+},
+{
+  node_model_id: 8,
+  node_label: 'Measurement',
+  node_properties: [
+    {  // potentially another node
+      name: 'type',
+      type: 'text'
+    },
+    {
+      name: 'value',
+      type: 'number_with_unit'
+    }
+  ]
+}
+
+{
+  to_create_node: 1,
+  node_instances: [
+    {
+      node_model_id: 1 //buffer transformer
+      action: "create"
+    },
+    // RODI
+    {
+      node_model_id: 2, // rodi input sample
+      // source means that the sample will be related to an node with label 'RODI Tap'
+      //source: 'RODI Tap' dont think we need to define this
+      action: "create"
+    },
+    {
+      node_model_id: 3 // rodi tap needs to be found
+      action: "find_or_create"
+    },
+    {
+      node_model_id: 8, //measurement on rodi sample
+      node_properties: [
+        {name: 'type', value: 'volume'}
+      ],
+      action: "create"
+    },
+    {
+      node_model_id: 2, // sample of nacl lot
+      action: "find_or_create"
+    },
+    {
+      node_model_id: 2, // nacl sample
+      // lot means that the sample will be related to a node with label 'Sample' related to a node w/ label 'Lot' that's related to a node with label 'Vendored 5M NaCl'
+      //lot_sample: 'Vendored 5M NaCl' //perhaps replaced by relationship
+      action: "create"
+    },
+    {
+      node_model_id: 8, //measurement on nacl sample
+      node_properties: [{name: 'type', value: 'volume'}]
+      action: "create"
+    },
+    {
+      node_model_id: 2 // final buffer sample
+      action: "create"
+    },
+    {
+      node_model_id: 8, //measurement on buffer sample
+      node_properties: [{name: 'type', value: 'pH'}]
+      action: "create"
+    },
+    {
+      node_model_id: 8, //measurement on buffer sample
+      node_properties: [{name: 'type', value: 'Conductivity'}]
+      action: "create"
+    },
+    {
+      node_model_id: 7 //new lot of buffer
+      action: "create"
+    }
+  ],
+  relationships: [
+    {
+      start_node: {node_instance_index: 0},
+      end_node: {node_instance_index: 5},
+      type: "has_output"
+    },
+    {
+      start_node: {node_instance_index: 1},
+      end_node: {node_instance_index: 0},
+      type: "is_input_for"
+    },
+    {
+      start_node: {node_instance_index: 3},
+      end_node: {node_instance_index: 0},
+      type: "is_input_for"
+    },
+    {
+      start_node: {node_instance_index: 1},
+      end_node: {node_instance_index: 2},
+      type: "has_measurement"
+    },
+    {
+      start_node: {node_instance_index: 3},
+      end_node: {node_instance_index: 4},
+      type: "has_measurement"
+    },
+    {
+      start_node: {node_instance_index: 5},
+      end_node: {node_instance_index: 6},
+      type: "has_measurement"
+    },
+    {
+      start_node: {node_instance_index: 5},
+      end_node: {node_instance_index: 7},
+      type: "has_measurement"
+    },
+    {
+      start_node: {node_instance_index: 2},
+      end_node: {query: "Match (n:Sample)-->(l:Lot)-->(c:Concept) where id(c) = 222 return n"},
+      type: "is subsample of"
+    },
+    {
+      start_node: {node_instance_index: 1},
+      end_node: {node_instance_index: 2},
+      type: "is sample of"
+    },
+    {
+      //created lot
+      start_node: {node_instance_index: 6},
+      end_node: {node_instance_index: 9},
+      type: "sample of"
+    },
+    {
+      //created sample
+      start_node: {node_instance_index: 9},
+      end_node: {node_id: 229}, // node id for 1M NaCl Solution
+      type: "lot of"
+    }
+  ]
+}
+
+
+
+{
+  sections: [
+    {
+      title: 'Define desired amount'
+      inputs: [
+        {
+          type: 'number_with_unit',
+          label: 'Desired Amount',
+          node_instance_index: 0,
+          property: 'desired_amount'
+        }
+      ]
+    },
+    {
+      title: '',
+      inputs: [
+        {
+          type: 'number_with_unit',
+          label: 'Amount of RODI',
+          node_instance_index: 3,
+          property: 'value'
+        },
+        {
+          type: 'search',
+          label: 'Source (RODI Tap)',
+          node_instance_index: 2
+        },
+        {
+          type: 'number_with_unit',
+          label: 'Amount of 5M NaCl',
+          node_instance_index: 5,
+          property: 'value'
+        },
+        {
+          type: 'search',
+          label: 'Lot of 5M NaCl',
+          node_instance_index: 4
+        },
+
+      ]
+    }
+  ]
+}
+
+
+
+
+
+
+
