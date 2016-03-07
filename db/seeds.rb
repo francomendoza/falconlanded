@@ -1,5 +1,6 @@
 
 Template.delete_all
+NodeModel.delete_all
 [
     {
         template_id: 1,
@@ -1580,11 +1581,23 @@ Template.delete_all
 ].each do |temp|
     # binding.pry
   temptemp = Template.create(node_label: temp[:node_label], children_templates: temp[:children_templates])
+  temptemp2 = NodeModel.create(label: temp[:node_label][0])
   temp[:node_properties].each do |node_props|
     temptemp.node_properties.create(node_props)
+    temptemp2.node_properties.create(node_props)
   end
   temptemp.related_nodes << temp[:related_nodes].map do |rel_node|
     related_template = Template.find_by(node_label: rel_node[:node_label])
+
+    temptemp2.related << rel_node[:node_label]
+    temptemp2.related.uniq!
+    temptemp2.save
+
+    related_node_model = NodeModel.find_by(label: rel_node[:node_label])
+    related_node_model.related << temp[:node_label][0]
+    related_node_model.related.uniq!
+    related_node_model.save
+
     if rel_node[:relationship] == "child_of"
         if related_template.children_templates == nil
             related_template.children_templates = []
@@ -1595,6 +1608,7 @@ Template.delete_all
             related_template.save
         end
     end
+
     RelatedNode.new(template_id: related_template.id.to_s,
                     relationship: rel_node[:relationship],
                     required: rel_node[:required],

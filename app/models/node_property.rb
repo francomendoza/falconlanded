@@ -5,4 +5,5 @@ class NodeProperty
   field :value, type: String
 
   embedded_in :template
+  embedded_in :node_model
 end
