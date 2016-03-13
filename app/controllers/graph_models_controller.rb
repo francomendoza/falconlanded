@@ -1,0 +1,2 @@
+class GraphModelsController < ApplicationController
+end

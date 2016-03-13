@@ -65,7 +65,7 @@
     //list of sample property nodes
   // ],
   [
-    { 
+    {
       template_id: //measurement
       node_label: "Measurement",
       relationship: 'has_measurement',
@@ -106,7 +106,7 @@ volume: {
   instrument_node_id: //could be container!
 }
 mass: {
-  value: 
+  value:
   instrument_node_id: //scale
 }
 weight: {
@@ -235,7 +235,7 @@ etc.
           bind_to: parent.related_nodes,
           key: 'entity_id'
           //replace_with: {
-            
+
             //entity_id: parent.related_nodes[0].related_nodes[3].entity_id, // AEX's 1st related node (AKA PreEq) 1st related node (AKA Sample Out Resin)
             // or
             {
@@ -279,7 +279,7 @@ etc.
     {
       "lot number"
     }
-  ] 
+  ]
 }
 
 
@@ -392,6 +392,38 @@ etc.
 }
 
 {
+  graph_model_id: 1,
+  graph_model_label: "", //similar to node label
+  node_instances: [
+
+  ],
+  graph_instances: [],
+  relationships: [
+    {
+      start_node: {
+        graph_instance: {
+          index: 0,
+          node_instance_index: 2 // 3rd node in 1st subgraph
+        }
+      },
+      end_node: {
+        graph_instance: {
+          index: 1,
+          graph_instance: {
+            index: 0,
+            node_instance_index: 0
+          }
+        }
+      },
+      type: "is related"
+    }
+  ]
+}
+
+
+{
+  graph_model_id: 1,
+  graph_model_label: "",
   to_create_node: 1,
   node_instances: [
     {
@@ -406,18 +438,18 @@ etc.
       action: "create"
     },
     {
-      node_model_id: 3 // rodi tap needs to be found
+      node_model_id: 3 // rodi tap needs to be found -subgraph (incl. room/location)
       action: "find_or_create"
     },
     {
-      node_model_id: 8, //measurement on rodi sample
+      node_model_id: 8, //measurement on rodi sample -subgraph (incl. )
       node_properties: [
         {name: 'type', value: 'volume'}
       ],
       action: "create"
     },
     {
-      node_model_id: 2, // sample of nacl lot
+      node_model_id: 2, // sample of nacl lot -subgraph (incl. source)
       action: "find_or_create"
     },
     {
@@ -556,10 +588,3 @@ etc.
     }
   ]
 }
-
-
-
-
-
-
-

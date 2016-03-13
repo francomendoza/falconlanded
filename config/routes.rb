@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :graph_models
   resources :node_models, only: [:show] do
     collection do
       post 'grid_search'
