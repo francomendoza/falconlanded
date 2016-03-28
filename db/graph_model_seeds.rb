@@ -33,6 +33,9 @@ GraphModel.delete_all
     graph_instances: [
       {
         label: "Company"
+      },
+      {
+        type: "Entity"
       }
     ],
     relationships: [
@@ -54,7 +57,8 @@ GraphModel.delete_all
     label: "Sample",
     node_instances: [
       {
-        label: "Sample"
+        label: "Sample",
+        default_new: true
       }
     ],
     graph_instances: [
@@ -96,6 +100,7 @@ GraphModel.delete_all
   },
   {
     label: "pH Probe",
+    type: "Entity",
     node_instances: [
       {
         label: "pH Probe"
@@ -166,21 +171,8 @@ GraphModel.delete_all
   }
 ].each do |graph|
   new_graph = GraphModel.create(graph)
-  graph[:graph_instances].each do |graph_instance|
-    related = GraphModel.find_by(label: graph_instance[:label])
-    related.related_graphs << graph[:label]
-  end
-  # graph[:relationships].each do |relationship|
-  #   if relationship[:start][:node] && relationship[:end][:graph]
-  #     # this doesnt account for multiple instances of the same node
-  #     start_node = NodeModel.find_by(label: new_graph[:node_instances][relationship[:start][:node]][:label])
-  #     start_node.related_graphs << new_graph[:graph_instances][relationship[:end][:graph][:index]][:label]
-  #     start_node.save
-  #
-  #   elsif relationship[:start][:graph] && relationship[:end][:node]
-  #     end_node = NodeModel.find_by(label: new_graph[:node_instances][relationship[:end][:node]][:label])
-  #     end_node.related_graphs << new_graph[:graph_instances][relationship[:start][:graph][:index]][:label]
-  #     end_node.save
-  #   end
+  # graph[:graph_instances].each do |graph_instance|
+  #   related = GraphModel.find_by(label: graph_instance[:label])
+  #   related.related_graphs << graph[:label]
   # end
 end

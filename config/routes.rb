@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
-  resources :graph_models
+  resources :graph_models, only: [:show] do
+    collection do
+      get 'templates_by_label'
+      get 'templates_by_type'
+      get 'template'
+    end
+  end
   resources :node_models, only: [:show] do
     collection do
       post 'grid_search'
