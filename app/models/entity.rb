@@ -142,11 +142,19 @@ class Entity
     true
   end
 
-  def to_hash
+  def to_frontend_hash
     {
       entity_id: self.id,
       node_label: self.labels,
       node_properties: self.properties_as_frontend
+    }
+  end
+
+  def to_hash
+    {
+      entity_id: self.id,
+      label: self.labels,
+      properties: self.properties
     }
   end
 

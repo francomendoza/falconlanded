@@ -25,6 +25,26 @@ class Graph
       end
     end
 
+    def search_by_label(label, term)
+
+      response = elasticsearch.search(
+        index: 'graphs',
+        type: label,
+        body: {
+          query: {
+            prefix: {
+              _all: term
+            }
+          }
+        }
+      )
+
+      response['hits']['hits'].map do |hit|
+        graph = hit['_source'].merge({ "elastic_id": hit['_id'] })
+        Graph.new(graph)
+      end
+    end
+
     def elasticsearch
       @elasticsearch ||= Elasticsearch::Client.new log: true
     end

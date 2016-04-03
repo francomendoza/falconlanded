@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :graphs
+  resources :graphs do
+    collection do
+      get 'search'
+    end
+  end
 
   resources :graph_models, only: [:show, :create] do
     collection do

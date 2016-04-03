@@ -12,7 +12,7 @@ class EntitiesController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: new_entity.to_hash
+        render json: new_entity.to_frontend_hash
       end
     end
   end
@@ -49,7 +49,7 @@ class EntitiesController < ApplicationController
     query = @neo.execute_query("match (n:#{node_label}) return n")
     response = query["data"].map do |node|
       node[0]["metadata"].merge(node[0]["data"])
-    end 
+    end
     respond_to do |format|
       format.json { render json: response }
     end
@@ -66,7 +66,7 @@ class EntitiesController < ApplicationController
     end
     respond_to do |format|
       format.json do
-        render json: results.map(&:to_hash)
+        render json: results.map(&:to_frontend_hash)
       end
     end
   end
@@ -106,9 +106,9 @@ class EntitiesController < ApplicationController
     nodes = @neo.execute_query("match (n) where id(n) in #{results_ids.keys} return n")["data"].map do |node|
       result_data = Entity.new(node[0]["metadata"].merge(properties: node[0]["data"]))
 
-      result_data.to_hash.merge({"_score": results_ids[result_data.id]})
+      result_data.to_frontend_hash.merge({"_score": results_ids[result_data.id]})
     end
-    
+
     respond_to do |format|
       format.json do
         render json: nodes.sort_by {|e| e[:_score]}.reverse

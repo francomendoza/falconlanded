@@ -1,5 +1,14 @@
 class GraphsController < ApplicationController
 
+  def search
+    params[:label] = "Antibody Lot"
+    results = Graph.search_by_label(params[:label], params[:term])
+
+    respond_to do |format|
+      format.json { render json: results }
+    end
+  end
+
   def create
     # binding.pry
     if !params[:graph_instances]
@@ -10,7 +19,7 @@ class GraphsController < ApplicationController
       params[:relationships] = []
     end
     # iterate through nodes and create each in Neo and Elastic
-    params[:node_instances].map do |node_instance|
+    params[:node_instances] = params[:node_instances].map do |node_instance|
       entity_form = EntityForm.new(node_instance)
       new_entity = Entity.create(entity_form.data).to_hash
       # add neo id to the node_instance maybe elasticsearch id?
@@ -18,7 +27,7 @@ class GraphsController < ApplicationController
     end
 
     # now all node instances, and graph instances have IDs associated, so save this new graph to
-    (params[:graph_instances] || []).map do |graph_instance|
+    params[:graph_instances] = params[:graph_instances].map do |graph_instance|
       Graph.find(graph_instance[:id])[:node_instances]
     end
 
@@ -34,5 +43,5 @@ class GraphsController < ApplicationController
     end
     # iterate through each relationship and create it
   end
-  
+
 end
