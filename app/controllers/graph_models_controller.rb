@@ -35,4 +35,14 @@ class GraphModelsController < ApplicationController
     end
   end
 
+  def node_finder obj, graph
+    if obj[:node]
+      return graph[:node_instances][obj[:node]]
+    else
+      graphInstanceIndex = obj[:graph][:index]
+      graphInstance =
+      graph = GraphModel.find(graphInstance[:id])
+    end
+  end
+
 end

@@ -120,13 +120,25 @@ class Entity
 
   def save
     new_node = neo.create_node(self.properties)
-    self.labels.each do |node_label|
-      neo.add_label(new_node, node_label)
+    # add temp logic to handle dumb labels in an array
+    if self.labels.kind_of?(Array)
+      self.labels.each do |node_label|
+        neo.add_label(new_node, node_label)
+      end
+    else
+      neo.add_label(new_node, self.labels)
     end
+
     @id = new_node["metadata"]["id"]
-    @labels.each do |label|
-      elasticsearch.index index: 'entities', type: label, id: @id, body: {properties: @properties, label: label }
+    # add temp logic to handle dumb labels in an array
+    if @labels.kind_of?(Array)
+      @labels.each do |label|
+        elasticsearch.index index: 'entities', type: label, id: @id, body: {properties: @properties, label: label }
+      end
+    else
+      elasticsearch.index index: 'entities', type: @labels, id: @id, body: {properties: @properties, label: @labels }
     end
+
     true
   end
 
@@ -137,7 +149,6 @@ class Entity
       node_properties: self.properties_as_frontend
     }
   end
-
 
   def properties_as_frontend
     @properties.each.with_object([]) do |(key, value), obj|

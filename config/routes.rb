@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  resources :graph_models, only: [:show] do
+  resources :graphs
+
+  resources :graph_models, only: [:show, :create] do
     collection do
       get 'templates_by_label'
       get 'templates_by_type'
