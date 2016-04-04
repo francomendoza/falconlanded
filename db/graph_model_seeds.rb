@@ -1,30 +1,47 @@
 GraphModel.delete_all
 [
   {
+    # type: "Entity",
     label: "Company",
     node_instances: [
       {
         label: "Company"
-      },
-      {
-        label: "City"
       }
     ],
-    graph_instances: [],
+    graph_instances: [
+      {
+        type: "Location"
+      }
+    ],
     relationships: [
       {
         start: {
           node: 0
         },
         end: {
-          node: 1
+          graph: {
+            index: 0,
+            node: 0
+          }
         },
         type: "is located in"
       }
     ]
   },
   {
-    label: "Part",
+    # type: "Entity",
+    label: "Equipment Type",
+    node_instances: [
+      {
+        label: "Equipment Type"
+      }
+    ],
+    graph_instances: [],
+    relationships: []
+  },
+  {
+    # type: "Entity",
+    label: "Equipment Part",
     node_instances: [
       {
         label: "Part"
@@ -35,7 +52,7 @@ GraphModel.delete_all
         label: "Company"
       },
       {
-        type: "Entity"
+        label: "Equipment Type"
       }
     ],
     relationships: [
@@ -50,6 +67,18 @@ GraphModel.delete_all
           }
         },
         type: "is manufactured by"
+      },
+      {
+        start: {
+          node: 0
+        },
+        end: {
+          graph: {
+            index: 1,
+            node: 0
+          }
+        },
+        type: "is a kind of"
       }
     ]
   },
@@ -99,8 +128,8 @@ GraphModel.delete_all
     ]
   },
   {
+    # type: "pH Probe",
     label: "pH Probe",
-    type: "Entity",
     node_instances: [
       {
         label: "pH Probe"
@@ -108,7 +137,10 @@ GraphModel.delete_all
     ],
     graph_instances: [
       {
-        label: "Part"
+        label: "Equipment Part"
+      },
+      {
+        type: "Location"
       }
     ],
     relationships: [
@@ -123,12 +155,24 @@ GraphModel.delete_all
           }
         },
         type: "child of"
+      },
+      {
+        start: {
+          node: 0
+        },
+        end: {
+          graph: {
+            index: 1,
+            node: 0
+          }
+        },
+        type: "located in"
       }
     ]
   },
   {
-    label: "pH Measurement",
     type: "Measurement",
+    label: "pH Measurement",
     node_instances: [
       {
         label: "pH Measurement"

@@ -51,7 +51,37 @@ NodeModel.delete_all
     ]
   },
   {
+    label: "Equipment Type",
+    properties: [
+      {
+        name: "Alias",
+        type: "text",
+        value: nil
+      }
+    ]
+  },
+  {
     label: "Company",
+    properties: [
+      {
+        name: "Name",
+        type: "text",
+        value: nil
+      }
+    ]
+  },
+  {
+    label: "Country",
+    properties: [
+      {
+        name: "Name",
+        type: "text",
+        value: nil
+      }
+    ]
+  },
+  {
+    label: "State",
     properties: [
       {
         name: "Name",
@@ -65,6 +95,26 @@ NodeModel.delete_all
     properties: [
       {
         name: "Name",
+        type: "text",
+        value: nil
+      }
+    ]
+  },
+  {
+    label: "Building",
+    properties: [
+      {
+        name: "Alias",
+        type: "text",
+        value: nil
+      }
+    ]
+  },
+  {
+    label: "Room",
+    properties: [
+      {
+        name: "Alias",
         type: "text",
         value: nil
       }

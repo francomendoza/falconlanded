@@ -1581,22 +1581,22 @@ NodeModel.delete_all
 ].each do |temp|
     # binding.pry
   temptemp = Template.create(node_label: temp[:node_label], children_templates: temp[:children_templates])
-  temptemp2 = NodeModel.create(label: temp[:node_label][0])
+  # temptemp2 = NodeModel.create(label: temp[:node_label][0])
   temp[:node_properties].each do |node_props|
     temptemp.node_properties.create(node_props)
-    temptemp2.node_properties.create(node_props)
+    # temptemp2.node_properties.create(node_props)
   end
   temptemp.related_nodes << temp[:related_nodes].map do |rel_node|
     related_template = Template.find_by(node_label: rel_node[:node_label])
 
-    temptemp2.related << rel_node[:node_label]
-    temptemp2.related.uniq!
-    temptemp2.save
+    # temptemp2.related << rel_node[:node_label]
+    # temptemp2.related.uniq!
+    # temptemp2.save
 
-    related_node_model = NodeModel.find_by(label: rel_node[:node_label])
-    related_node_model.related << temp[:node_label][0]
-    related_node_model.related.uniq!
-    related_node_model.save
+    # related_node_model = NodeModel.find_by(label: rel_node[:node_label])
+    # related_node_model.related << temp[:node_label][0]
+    # related_node_model.related.uniq!
+    # related_node_model.save
 
     if rel_node[:relationship] == "child_of"
         if related_template.children_templates == nil
@@ -1623,3 +1623,8 @@ NodeModel.delete_all
                    )
   end
 end
+
+load './db/node_model_seeds.rb'
+load './db/graph_model_seeds.rb'
+load './db/location_graph_model_seeds.rb'
+load './db/lot_graph_model_seeds.rb'

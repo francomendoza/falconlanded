@@ -28,8 +28,12 @@ class GraphsController < ApplicationController
 
     # now all node instances, and graph instances have IDs associated, so save this new graph to
     params[:graph_instances] = params[:graph_instances].map do |graph_instance|
-      Graph.find(graph_instance[:id])[:node_instances]
-    end
+      if graph_instance[:id]
+        Graph.find(graph_instance[:id]).node_instances
+      else
+        nil
+      end
+    end.compact!
 
     Graph.create(params)
 
